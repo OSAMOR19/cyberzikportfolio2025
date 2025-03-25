@@ -25,6 +25,9 @@ import SkillsSection from "@/components/skills-section"
 import ContactForm from "@/components/contact-form"
 import { ThreeDScene } from "@/components/three-d-scene"
 
+import { Instagram, MessageCircle, Music2 } from "lucide-react"  // Add new icons
+import { Icon } from "@iconify/react"  // Add Iconify import
+
 export default function Portfolio() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("home")
@@ -621,15 +624,23 @@ export default function Portfolio() {
                 <div className="pt-6">
                   <h4 className="text-lg font-medium text-white mb-4">Connect with me</h4>
                   <div className="flex gap-4">
-                    {[Github, ExternalLink, Mail].map((Icon, index) => (
+                    {[
+                      { icon: "mdi:github", url: "https://github.com/OSAMOR19" },
+                      { icon: "mdi:instagram", url: "https://instagram.com/cyberzikk" },
+                      { icon: "ri:tiktok-fill", url: "https://tiktok.com/@cyberzik" },
+                      { icon: "logos:whatsapp-icon", url: "https://wa.me/+2349057469410" },
+                      { icon: "mdi:email-outline", url: "mailto:isaacchukwuka67@gmail.com" },
+                    ].map(({ icon, url }, index) => (
                       <motion.a
                         key={index}
-                        href="https://github.com/OSAMOR19"
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="w-10 h-10 rounded-full bg-purple-900/30 border border-purple-500/30 flex items-center justify-center hover:bg-purple-800/40 transition-colors"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                       >
-                        <Icon className="h-5 w-5 text-purple-400" />
+                        <Icon icon={icon} className="h-5 w-5 text-purple-400" />
                       </motion.a>
                     ))}
                   </div>
