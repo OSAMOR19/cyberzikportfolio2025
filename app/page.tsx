@@ -28,6 +28,7 @@ import { ThreeDScene } from "@/components/three-d-scene"
 export default function Portfolio() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("home")
+  // Update ref type declarations
   const heroRef = useRef<HTMLDivElement>(null)
   const aboutRef = useRef<HTMLDivElement>(null)
   const skillsRef = useRef<HTMLDivElement>(null)
@@ -74,6 +75,7 @@ export default function Portfolio() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Update scrollToSection parameter type
   const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
     if (ref.current) {
       window.scrollTo({
@@ -83,6 +85,32 @@ export default function Portfolio() {
       setMobileMenuOpen(false)
     }
   }
+
+  // In the navigation section, update the button props:
+  {[
+    { name: "Home", ref: heroRef, id: "home" },
+    { name: "About", ref: aboutRef, id: "about" },
+    { name: "Skills", ref: skillsRef, id: "skills" },
+    { name: "Projects", ref: projectsRef, id: "projects" },
+    { name: "Contact", ref: contactRef, id: "contact" },
+  ].map((item) => (
+    <button
+      key={item.name}
+      onClick={() => scrollToSection(item.ref)}
+      className={cn(
+        "text-sm font-medium relative transition-colors hover:text-purple-400",
+        activeSection === item.id ? "text-purple-400" : "text-gray-400",
+      )}
+    >
+      {item.name}
+      {activeSection === item.id && (
+        <motion.div
+          layoutId="activeSection"
+          className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-cyan-500"
+        />
+      )}
+    </button>
+  ))}
 
   const projects = [
     {
@@ -574,7 +602,8 @@ export default function Portfolio() {
                     </div>
                     <div>
                       <div className="text-sm text-gray-400">Email</div>
-                      <div className="text-white">contact@cyberzik.dev</div>
+                      <div className="text-white">isaacchukwuka67@gmail.com</div>
+                      <div className="text-white">cyberzikk1@gmail.com</div>
                     </div>
                   </div>
 
@@ -584,7 +613,7 @@ export default function Portfolio() {
                     </div>
                     <div>
                       <div className="text-sm text-gray-400">GitHub</div>
-                      <div className="text-white">github.com/cyberzik</div>
+                      <div className="text-white">github.com/Osamor19</div>
                     </div>
                   </div>
                 </div>

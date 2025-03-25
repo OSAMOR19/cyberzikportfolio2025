@@ -4,11 +4,12 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
+import { Icon } from "@iconify/react"  // Fixed named import
 
 interface Skill {
   name: string
   level: number
-  icon?: string
+  icon: string  // Changed from optional to required
 }
 
 interface SkillCategory {
@@ -23,45 +24,45 @@ export default function SkillsSection() {
     {
       name: "frontend",
       skills: [
-        { name: "React", level: 95 },
-        { name: "Next.js", level: 90 },
-        { name: "TypeScript", level: 85 },
-        { name: "Tailwind CSS", level: 90 },
-        { name: "Framer Motion", level: 80 },
-        { name: "Three.js", level: 75 },
+        { name: "React", level: 95, icon: "vscode-icons:file-type-reactjs" },
+        { name: "Next.js", level: 90, icon: "vscode-icons:file-type-next" },
+        { name: "TypeScript", level: 85, icon: "vscode-icons:file-type-typescript-official" },
+        { name: "Tailwind CSS", level: 90, icon: "vscode-icons:file-type-tailwind" },
+        { name: "Framer Motion", level: 80, icon: "simple-icons:framermotion" },
+        { name: "Three.js", level: 75, icon: "simple-icons:threedotjs" },
       ],
     },
     {
       name: "backend",
       skills: [
-        { name: "Node.js", level: 90 },
-        { name: "Express", level: 85 },
-        { name: "MongoDB", level: 80 },
-        { name: "PostgreSQL", level: 75 },
-        { name: "GraphQL", level: 80 },
-        { name: "REST API", level: 90 },
+        { name: "Node.js", level: 90, icon: "vscode-icons:file-type-node" },
+        { name: "Express", level: 85, icon: "simple-icons:express" },
+        { name: "MongoDB", level: 80, icon: "vscode-icons:file-type-mongo" },
+        { name: "PostgreSQL", level: 75, icon: "vscode-icons:file-type-pgsql" },
+        { name: "GraphQL", level: 80, icon: "vscode-icons:file-type-graphql" },
+        { name: "REST API", level: 90, icon: "gis:globe" },
       ],
     },
     {
       name: "blockchain",
       skills: [
-        { name: "Solidity", level: 90 },
-        { name: "Web3.js", level: 85 },
-        { name: "Ethers.js", level: 85 },
-        { name: "Smart Contracts", level: 90 },
-        { name: "DeFi Protocols", level: 80 },
-        { name: "NFT Development", level: 85 },
+        { name: "Solidity", level: 90, icon: "vscode-icons:file-type-solidity" },
+        { name: "Web3.js", level: 85, icon: "logos:web3js" },
+        { name: "Ethers.js", level: 85, icon: "simple-icons:ethersdotjs" },
+        { name: "Smart Contracts", level: 90, icon: "material-symbols:contract" },
+        { name: "DeFi Protocols", level: 80, icon: "arcticons:defi" },
+        { name: "NFT Development", level: 85, icon: "arcticons:nft" },
       ],
     },
     {
       name: "tools",
       skills: [
-        { name: "Git", level: 90 },
-        { name: "Docker", level: 80 },
-        { name: "AWS", level: 75 },
-        { name: "CI/CD", level: 80 },
-        { name: "Figma", level: 70 },
-        { name: "Testing", level: 85 },
+        { name: "Git", level: 90, icon: "vscode-icons:file-type-git" },
+        { name: "Docker", level: 80, icon: "vscode-icons:file-type-docker" },
+        { name: "AWS", level: 75, icon: "vscode-icons:file-type-aws" },
+        { name: "CI/CD", level: 80, icon: "simple-icons:circleci" },
+        { name: "Figma", level: 70, icon: "vscode-icons:file-type-figma" },
+        { name: "Testing", level: 85, icon: "ion:test-tube" },
       ],
     },
   ]
@@ -92,10 +93,16 @@ export default function SkillsSection() {
                 transition={{ duration: 0.3 }}
                 className="grid gap-6"
               >
+               
+                
+                
                 {category.skills.map((skill, index) => (
                   <div key={skill.name} className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-white font-medium">{skill.name}</span>
+                      <div className="flex items-center gap-3">
+                        <Icon icon={skill.icon} className="h-5 w-5 text-purple-400" />
+                        <span className="text-white font-medium">{skill.name}</span>
+                      </div>
                       <span className="text-gray-400 text-sm">{skill.level}%</span>
                     </div>
                     <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
