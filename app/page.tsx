@@ -357,7 +357,7 @@ export default function Portfolio() {
                 size="lg"
                 onClick={() => scrollToSection(projectsRef)}
               >
-                View My Work
+                View My Works
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
 
