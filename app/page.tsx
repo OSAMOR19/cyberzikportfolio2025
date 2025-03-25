@@ -7,6 +7,17 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { ArrowRight, ChevronDown, Code, ExternalLink, Github, Mail, Menu, X } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import curate from "@/components/images/zeitprotocol.png"
+import Me from "@/components/images/aboutme.jpg"
+import ecommerce from "@/components/images/ephronpage.png"
+import solbet from "@/components/images/solbetdapp.png"
+
+import curatelearn from "@/components/images/curatelearn.png"
+import syndeo from "@/components/images/syndeopage.png"
+import Aceembeded from "@/components/images/aceembededpage.png"
+import skyeyez from "@/components/images/skyeyes.png"
+import buidl from "@/components/images/buidl.png"
+import Nftdapp from "@/components/images/vyperiumtracker.png"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import ProjectCard from "@/components/project-card"
@@ -76,13 +87,13 @@ export default function Portfolio() {
   const projects = [
     {
       id: 1,
-      title: "DeFi Exchange Platform",
+      title: "ZEIT PROTOCOL",
       description:
         "A decentralized exchange platform built with Solidity and React that allows users to swap tokens, provide liquidity, and earn rewards.",
-      image: "/placeholder.svg?height=600&width=800",
+      image: curate.src,
       tags: ["Blockchain", "Solidity", "React", "Web3.js"],
-      demoLink: "#",
-      codeLink: "#",
+      demoLink: "https://zeitprotocol.vercel.app/", // Add your live demo URL
+      codeLink: "https://zeitprotocol.vercel.app/", // Add GitHub repo
       category: "DApps",
     },
     {
@@ -90,57 +101,90 @@ export default function Portfolio() {
       title: "E-Commerce Dashboard",
       description:
         "A comprehensive e-commerce dashboard with inventory management, sales analytics, and customer insights.",
-      image: "/placeholder.svg?height=600&width=800",
+      image: ecommerce.src,
       tags: ["Next.js", "Tailwind CSS", "MongoDB", "Express"],
-      demoLink: "#",
-      codeLink: "#",
+      demoLink: "https://ephrondeployment.vercel.app/", // Add your live demo URL
+      codeLink: "https://ephrondeployment.vercel.app/", // Add GitHub repo
       category: "E-commerce",
     },
     {
       id: 3,
-      title: "NFT Marketplace",
+      title: "VYPERIUM WALLET TRACKER",
       description:
         "A marketplace for creating, buying, and selling NFTs with wallet integration and auction functionality.",
-      image: "/placeholder.svg?height=600&width=800",
+      image: Nftdapp.src,
       tags: ["Ethereum", "IPFS", "React", "Node.js"],
-      demoLink: "#",
-      codeLink: "#",
+      demoLink: "https://vyperium-lilac.vercel.app/", // Add your live demo URL
+      codeLink: "https://vyperium-lilac.vercel.app/", // Add GitHub repo
+      category: "DApps",
+    },
+    {
+      id: 5,
+      title: "SOLBET",
+      description:
+        "A blockchain-based supply chain tracking system that ensures transparency and authenticity of products.",
+      image: solbet.src,
+      tags: ["Hyperledger", "React", "Node.js", "Express"],
+      demoLink: "https://solbet-done.vercel.app/", // Add your live demo URL
+      codeLink: "https://solbet-done.vercel.app/", // Add GitHub repo
       category: "DApps",
     },
     {
       id: 4,
-      title: "Real-time Chat Application",
+      title: "AI-guided self-learning platform",
       description:
         "A real-time messaging platform with end-to-end encryption, file sharing, and group chat capabilities.",
-      image: "/placeholder.svg?height=600&width=800",
+      image: curatelearn.src,
       tags: ["Socket.io", "React", "Express", "MongoDB"],
-      demoLink: "#",
-      codeLink: "#",
+      demoLink: "https://curatelearn.com/",
+      codeLink: "https://curatelearn.com/",
       category: "Web Apps",
     },
     {
-      id: 5,
-      title: "Supply Chain Tracking DApp",
+      id: 6,
+      title: "SkyEyez Analytics Platform",
+      description: 
+        "Advanced aerial data analysis platform for real-time drone analytics and geospatial intelligence.",
+      image: skyeyez.src,
+      tags: ["Next.js", "Python", "GIS", "TensorFlow"],
+      demoLink: "https://skyeyez.ai/",
+      codeLink: "https://skyeyez.ai/",
+      category: "Web Apps",
+    },
+    {
+      id: 7,
+      title: "Syndeo Collaboration Suite",
       description:
-        "A blockchain-based supply chain tracking system that ensures transparency and authenticity of products.",
-      image: "/placeholder.svg?height=600&width=800",
-      tags: ["Hyperledger", "React", "Node.js", "Express"],
-      demoLink: "#",
-      codeLink: "#",
+        "Decentralized collaboration platform with integrated project management and DAO governance features.",
+      image: syndeo.src,
+      tags: ["Solidity", "IPFS", "React", "Node.js"],
+      demoLink: "https://www.syndeoltd.com/",
+      codeLink: "https://www.syndeoltd.com/",
       category: "DApps",
     },
     {
-      id: 6,
-      title: "E-Commerce Store",
+      id: 8,
+      title: "Ace Embedded Systems",
       description:
-        "A fully-featured e-commerce store with product listings, cart functionality, payment processing, and order tracking.",
-      image: "/placeholder.svg?height=600&width=800",
-      tags: ["Next.js", "Stripe", "MongoDB", "Tailwind CSS"],
-      demoLink: "#",
-      codeLink: "#",
-      category: "E-commerce",
+        "IoT platform for industrial automation with real-time monitoring and predictive maintenance.",
+      image: Aceembeded.src,
+      tags: ["Embedded C", "RTOS", "Python", "MQTT"],
+      demoLink: "https://aceembedded.io/",
+      codeLink: "https://aceembedded.io/",
+      category: "Web Apps",
     },
-  ]
+    {
+      id: 9,
+      title: "BUIDL Developer Platform",
+      description:
+        "Blockchain developer toolkit with smart contract templates and deployment automation.",
+      image: buidl.src,
+      tags: ["Hardhat", "Ethers.js", "React", "TypeScript"],
+      demoLink: "https://buidlai.pro/",
+      codeLink: "https://buidlai.pro/",
+      category: "DApps",
+    }
+]
 
   const [filter, setFilter] = useState("All")
   const categories = ["All", "Web Apps", "E-commerce", "DApps"]
@@ -169,7 +213,7 @@ export default function Portfolio() {
             ].map((item) => (
               <button
                 key={item.name}
-                onClick={() => scrollToSection(item.ref)}
+                onClick={() => item.ref.current && scrollToSection(item.ref)}
                 className={cn(
                   "text-sm font-medium relative transition-colors hover:text-purple-400",
                   activeSection === item.id ? "text-purple-400" : "text-gray-400",
@@ -339,7 +383,7 @@ export default function Portfolio() {
                 <div className="relative">
                   <div className="aspect-square rounded-2xl overflow-hidden border border-purple-500/20 shadow-xl shadow-purple-500/10">
                     <Image
-                      src="/placeholder.svg?height=600&width=600"
+                      src={Me}
                       alt="Developer Portrait"
                       width={600}
                       height={600}
@@ -551,7 +595,7 @@ export default function Portfolio() {
                     {[Github, ExternalLink, Mail].map((Icon, index) => (
                       <motion.a
                         key={index}
-                        href="#"
+                        href="https://github.com/OSAMOR19"
                         className="w-10 h-10 rounded-full bg-purple-900/30 border border-purple-500/30 flex items-center justify-center hover:bg-purple-800/40 transition-colors"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
