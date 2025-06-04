@@ -7,11 +7,21 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { ArrowRight, ChevronDown, Code, ExternalLink, Github, Mail, Menu, X } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+
+// New project image imports
+import brivas from "@/components/images/brivas.png"
+import cybernovr from "@/components/images/cybernovr.png"
+import play2learn from "@/components/images/play2learn.png"
+import dreambooks from "@/components/images/dreambooks.png"
+import demlad from "@/components/images/demlad.png"
+import aprilfull from "@/components/images/aprilfull.png"
+import cr8core from "@/components/images/cr8core.png"
+
+// Existing project image imports
 import curate from "@/components/images/zeitprotocol.png"
 import Me from "@/components/images/aboutme.jpg"
 import ecommerce from "@/components/images/ephronpage.png"
 import solbet from "@/components/images/solbetdapp.png"
-
 import curatelearn from "@/components/images/curatelearn.png"
 import syndeo from "@/components/images/syndeopage.png"
 import Aceembeded from "@/components/images/aceembededpage.png"
@@ -116,6 +126,83 @@ export default function Portfolio() {
   ))}
 
   const projects = [
+    {
+      id: 10,
+      title: "BRIVAS",
+      description:
+        "A reliable messaging platform that offers bulk SMS and various value-added services.",
+      image: brivas.src,
+      tags: ["Messaging", "SMS", "API", "Cloud Services"],
+      demoLink: "https://brivas.io/",
+      codeLink: "https://brivas.io/",
+      category: "Web Apps",
+    },
+    {
+      id: 11,
+      title: "CYBERNOVR",
+      description:
+        "A cybersecurity company offering a range of cybersecurity solutions.",
+      image: cybernovr.src,
+      tags: ["Cybersecurity", "Network Security", "Cloud Security", "Consulting"],
+      demoLink: "https://www.cybernovr.com/",
+      codeLink: "https://www.cybernovr.com/",
+      category: "Web Apps",
+    },
+    {
+      id: 12,
+      title: "PLAY2LEARN GAME",
+      description:
+        "A Web3 gamified education game.",
+      image: play2learn.src,
+      tags: ["Web3", "Gaming", "Education", "Blockchain"],
+      demoLink: "https://play2learngame.vercel.app/",
+      codeLink: "https://play2learngame.vercel.app/",
+      category: "DApps",
+    },
+    {
+      id: 13,
+      title: "DREAMBOOKS",
+      description:
+        "A school management platform.",
+      image: dreambooks.src,
+      tags: ["Education", "Management", "Dashboard", "Analytics"],
+      demoLink: "https://dreambooksproject.vercel.app/",
+      codeLink: "https://dreambooksproject.vercel.app/",
+      category: "Web Apps",
+    },
+    {
+      id: 14,
+      title: "DEMLAD PROPERTIES",
+      description:
+        "A real estate company website.",
+      image: demlad.src,
+      tags: ["Real Estate", "Property Management", "Listings", "CRM"],
+      demoLink: "https://demladproperties.vercel.app/",
+      codeLink: "https://demladproperties.vercel.app/",
+      category: "Web Apps",
+    },
+    {
+      id: 15,
+      title: "APRILFULL",
+      description:
+        "A blockchain entertainment event platform where over 1000 people attended and bought tickets.",
+      image: aprilfull.src,
+      tags: ["Blockchain", "Events", "Ticketing", "Entertainment"],
+      demoLink: "https://www.aprilfull.org/",
+      codeLink: "https://www.aprilfull.org/",
+      category: "DApps",
+    },
+    {
+      id: 16,
+      title: "CR8CORELABS",
+      description:
+        "A creator platform built on the Base blockchain.",
+      image: cr8core.src,
+      tags: ["Base", "Blockchain", "Creator Economy", "Web3"],
+      demoLink: "https://basebuildhathon.vercel.app/",
+      codeLink: "https://basebuildhathon.vercel.app/",
+      category: "DApps",
+    },
     {
       id: 1,
       title: "ZEIT PROTOCOL",
@@ -292,7 +379,7 @@ export default function Portfolio() {
               ].map((item) => (
                 <motion.button
                   key={item.name}
-                  onClick={() => scrollToSection(item.ref)}
+                  onClick={() => item.ref.current && scrollToSection(item.ref)}
                   className="text-2xl font-medium text-gray-300 hover:text-purple-400 transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -413,13 +500,16 @@ export default function Portfolio() {
               >
                 <div className="relative">
                   <div className="aspect-square rounded-2xl overflow-hidden border border-purple-500/20 shadow-xl shadow-purple-500/10">
-                    <Image
-                      src={Me}
-                      alt="Developer Portrait"
-                      width={600}
-                      height={600}
+                    <video
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
                       className="object-cover w-full h-full"
-                    />
+                    >
+                      <source src="/videos/cyberzikintrovid.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
                   </div>
                   <div className="absolute -bottom-6 -right-6 bg-black/80 backdrop-blur-sm border border-purple-500/20 rounded-xl p-4 shadow-lg">
                     <div className="grid grid-cols-3 gap-4 text-center">
