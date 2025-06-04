@@ -222,8 +222,8 @@ export default function Portfolio() {
         "A comprehensive e-commerce dashboard with inventory management, sales analytics, and customer insights.",
       image: ecommerce.src,
       tags: ["Next.js", "Tailwind CSS", "MongoDB", "Express"],
-      demoLink: "https://ephrondeployment.vercel.app/", // Add your live demo URL
-      codeLink: "https://ephrondeployment.vercel.app/", // Add GitHub repo
+      demoLink: "https://ephronwork-main.vercel.app/", // Add your live demo URL
+      codeLink: "https://ephronwork-main.vercel.app/", // Add GitHub repo
       category: "E-commerce",
     },
     {
