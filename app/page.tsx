@@ -16,6 +16,7 @@ import dreambooks from "@/components/images/dreambooks.png"
 import demlad from "@/components/images/demlad.png"
 import aprilfull from "@/components/images/aprilfull.png"
 import cr8core from "@/components/images/cr8core.png"
+import cyberzikLogo from "@/components/images/cyberziklogonobg.png"
 
 // Existing project image imports
 import curate from "@/components/images/zeitprotocol.png"
@@ -316,8 +317,15 @@ export default function Portfolio() {
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <Link
             href="/"
-            className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-cyan-500 text-transparent bg-clip-text"
+            className="flex items-center gap-2 text-2xl font-bold bg-gradient-to-r from-purple-500 to-cyan-500 text-transparent bg-clip-text"
           >
+            <Image 
+              src={cyberzikLogo} 
+              alt="Cyberzik Logo" 
+              width={40} 
+              height={40} 
+              className="object-contain"
+            />
             Cyberzik
           </Link>
 
@@ -408,6 +416,21 @@ export default function Portfolio() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
+              className="mb-8 flex justify-center"
+            >
+              <Image 
+                src={cyberzikLogo} 
+                alt="Cyberzik Logo" 
+                width={120} 
+                height={120} 
+                className="object-contain animate-pulse-subtle"
+              />
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
               className="mb-4 inline-block px-4 py-1 rounded-full bg-purple-900/30 border border-purple-500/30 text-purple-400 text-sm font-medium"
             >
               Fullstack & Blockchain Developer
@@ -417,7 +440,7 @@ export default function Portfolio() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-purple-400 to-cyan-400 text-transparent bg-clip-text"
+              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-purple-400 to-cyan-400 text-transparent bg-clip-text drop-shadow-glow"
             >
               Building the future,
               <br /> one block at a time
@@ -499,13 +522,13 @@ export default function Portfolio() {
                 viewport={{ once: true, margin: "-100px" }}
               >
                 <div className="relative">
-                  <div className="aspect-square rounded-2xl overflow-hidden border border-purple-500/20 shadow-xl shadow-purple-500/10">
+                  <div className="rounded-2xl overflow-hidden border border-purple-500/20 shadow-xl shadow-purple-500/10">
                     <video
                       autoPlay
-                      muted
                       loop
                       playsInline
-                      className="object-cover w-full h-full"
+                      controls
+                      className="w-full h-auto"
                     >
                       <source src="/videos/cyberzikintrovid.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
