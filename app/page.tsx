@@ -222,8 +222,8 @@ export default function Portfolio() {
         "A comprehensive e-commerce dashboard with inventory management, sales analytics, and customer insights.",
       image: ecommerce.src,
       tags: ["Next.js", "Tailwind CSS", "MongoDB", "Express"],
-      demoLink: "https://ephronwork-main.vercel.app/", // Add your live demo URL
-      codeLink: "https://ephronwork-main.vercel.app/", // Add GitHub repo
+      demoLink: "https://ephronroyalfits.com/", // Add your live demo URL
+      codeLink: "https://ephronroyalfits.com/", // Add GitHub repo
       category: "E-commerce",
     },
     {
@@ -336,14 +336,33 @@ export default function Portfolio() {
               { name: "Skills", ref: skillsRef, id: "skills" },
               { name: "Projects", ref: projectsRef, id: "projects" },
               { name: "Contact", ref: contactRef, id: "contact" },
+              { name: "Pricing", href: "/pricing", id: "pricing" },
             ].map((item) => (
-              <button
-                key={item.name}
-                onClick={() => item.ref.current && scrollToSection(item.ref)}
-                className={cn(
-                  "text-sm font-medium relative transition-colors hover:text-purple-400",
-                  activeSection === item.id ? "text-purple-400" : "text-gray-400",
-                )}
+              item.href ? (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={cn(
+                    "text-sm font-medium relative transition-colors hover:text-purple-400",
+                    activeSection === item.id ? "text-purple-400" : "text-gray-400",
+                  )}
+                >
+                  {item.name}
+                  {activeSection === item.id && (
+                    <motion.div
+                      layoutId="activeSection"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-cyan-500"
+                    />
+                  )}
+                </Link>
+              ) : (
+                <button
+                  key={item.name}
+                  onClick={() => item.ref.current && scrollToSection(item.ref)}
+                  className={cn(
+                    "text-sm font-medium relative transition-colors hover:text-purple-400",
+                    activeSection === item.id ? "text-purple-400" : "text-gray-400",
+                  )}
               >
                 {item.name}
                 {activeSection === item.id && (
@@ -353,6 +372,7 @@ export default function Portfolio() {
                   />
                 )}
               </button>
+              )
             ))}
           </nav>
 
@@ -384,16 +404,29 @@ export default function Portfolio() {
                 { name: "Skills", ref: skillsRef },
                 { name: "Projects", ref: projectsRef },
                 { name: "Contact", ref: contactRef },
+                { name: "Pricing", href: "/pricing" },
               ].map((item) => (
-                <motion.button
-                  key={item.name}
-                  onClick={() => item.ref.current && scrollToSection(item.ref)}
-                  className="text-2xl font-medium text-gray-300 hover:text-purple-400 transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {item.name}
-                </motion.button>
+                item.href ? (
+                  <motion.div key={item.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Link
+                      href={item.href}
+                      className="text-2xl font-medium text-gray-300 hover:text-purple-400 transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
+                ) : (
+                  <motion.button
+                    key={item.name}
+                    onClick={() => item.ref.current && scrollToSection(item.ref)}
+                    className="text-2xl font-medium text-gray-300 hover:text-purple-400 transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {item.name}
+                  </motion.button>
+                )
               ))}
             </nav>
           </motion.div>
