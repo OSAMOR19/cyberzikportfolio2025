@@ -751,8 +751,8 @@ export default function Portfolio() {
                     </div>
                     <div>
                       <div className="text-sm text-gray-400">Email</div>
-                      <div className="text-white">isaacchukwuka67@gmail.com</div>
-                      <div className="text-white">cyberzikk1@gmail.com</div>
+                      <div className="text-white">info@cyberzik.online</div>
+                      <div className="text-white">cyberzik.online</div>
                     </div>
                   </div>
 
@@ -775,7 +775,7 @@ export default function Portfolio() {
                       { icon: "mdi:instagram", url: "https://instagram.com/cyberzikk" },
                       { icon: "ri:tiktok-fill", url: "https://tiktok.com/@cyberzik" },
                       { icon: "logos:whatsapp-icon", url: "https://wa.me/+2349057469410" },
-                      { icon: "mdi:email-outline", url: "mailto:isaacchukwuka67@gmail.com" },
+                      { icon: "mdi:email-outline", url: "mailto:info@cyberzik.online" },
                     ].map(({ icon, url }, index) => (
                       <motion.a
                         key={index}
