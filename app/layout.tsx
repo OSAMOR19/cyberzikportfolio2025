@@ -4,7 +4,7 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'cyberzik',
   description: 'Created for Cyberzik',
-  generator: 'v0.dev',
+  // generator: 'v0.dev',
 }
 
 export default function RootLayout({

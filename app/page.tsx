@@ -18,6 +18,17 @@ import aprilfull from "@/components/images/aprilfull.png"
 import cr8core from "@/components/images/cr8core.png"
 import cyberzikLogo from "@/components/images/cyberziklogonobg.png"
 
+// Mobile app images
+import luckybag1 from "@/components/images/Luckybag1.png"
+import luckybag2 from "@/components/images/Luckybag2.png"
+import luckybag3 from "@/components/images/Luckybag3.png"
+import luckybag4 from "@/components/images/Luckybag4.png"
+import luckybag5 from "@/components/images/Luckybag5.png"
+import vendcliq1 from "@/components/images/Vendcliq1.png"
+import vendcliq2 from "@/components/images/Vendcliq2.png"
+import vendcliq3 from "@/components/images/Vendcliq3.png"
+import vendcliq4 from "@/components/images/Vendcliq4.png"
+
 // Existing project image imports
 import curate from "@/components/images/zeitprotocol.png"
 import Me from "@/components/images/aboutme.jpg"
@@ -90,7 +101,7 @@ export default function Portfolio() {
   }, [])
 
   // Update scrollToSection parameter type
-  const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
+  const scrollToSection = (ref: React.RefObject<HTMLDivElement | null>) => {
     if (ref.current) {
       window.scrollTo({
         top: ref.current.offsetTop - 80,
@@ -108,14 +119,14 @@ export default function Portfolio() {
     { name: "Projects", ref: projectsRef, id: "projects" },
     { name: "Contact", ref: contactRef, id: "contact" },
   ].map((item) => (
-    <button
-      key={item.name}
-      onClick={() => scrollToSection(item.ref)}
-      className={cn(
-        "text-sm font-medium relative transition-colors hover:text-purple-400",
-        activeSection === item.id ? "text-purple-400" : "text-gray-400",
-      )}
-    >
+                <button
+                  key={item.name}
+                  onClick={() => item.ref && scrollToSection(item.ref)}
+                  className={cn(
+                    "text-sm font-medium relative transition-colors hover:text-purple-400",
+                    activeSection === item.id ? "text-purple-400" : "text-gray-400",
+                  )}
+                >
       {item.name}
       {activeSection === item.id && (
         <motion.div
@@ -302,11 +313,46 @@ export default function Portfolio() {
       demoLink: "https://buidlai.pro/",
       codeLink: "https://buidlai.pro/",
       category: "DApps",
+    },
+    {
+      id: 17,
+      title: "Lucky Bag App",
+      description:
+        "A mobile app featuring lucky bag mechanics with multiple screens showcasing user interface, game mechanics, and interactive elements. The app includes various screens for gameplay, rewards, and user engagement.",
+      image: luckybag1.src,
+      tags: ["React Native", "Mobile UI", "Gaming", "Interactive"],
+      demoLink: "#",
+      codeLink: "#",
+      category: "Mobile Apps",
+      screenshots: [
+        luckybag1.src,
+        luckybag2.src,
+        luckybag3.src,
+        luckybag4.src,
+        luckybag5.src
+      ]
+    },
+    {
+      id: 18,
+      title: "Vend Cliq App",
+      description:
+        "A comprehensive mobile application with multiple interface screens showing different functionalities, user interactions, and app features. The app demonstrates various UI components and user experience flows.",
+      image: vendcliq1.src,
+      tags: ["Mobile App", "UI/UX", "React Native", "User Interface"],
+      demoLink: "#",
+      codeLink: "#",
+      category: "Mobile Apps",
+      screenshots: [
+        vendcliq1.src,
+        vendcliq2.src,
+        vendcliq3.src,
+        vendcliq4.src
+      ]
     }
 ]
 
   const [filter, setFilter] = useState("All")
-  const categories = ["All", "Web Apps", "E-commerce", "DApps"]
+  const categories = ["All", "Web Apps", "E-commerce", "DApps", "Mobile Apps"]
 
   const filteredProjects = filter === "All" ? projects : projects.filter((project) => project.category === filter)
 
@@ -358,7 +404,7 @@ export default function Portfolio() {
               ) : (
                 <button
                   key={item.name}
-                  onClick={() => item.ref.current && scrollToSection(item.ref)}
+                  onClick={() => item.ref && scrollToSection(item.ref)}
                   className={cn(
                     "text-sm font-medium relative transition-colors hover:text-purple-400",
                     activeSection === item.id ? "text-purple-400" : "text-gray-400",
@@ -419,7 +465,7 @@ export default function Portfolio() {
                 ) : (
                   <motion.button
                     key={item.name}
-                    onClick={() => item.ref.current && scrollToSection(item.ref)}
+                    onClick={() => item.ref && scrollToSection(item.ref)}
                     className="text-2xl font-medium text-gray-300 hover:text-purple-400 transition-colors"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -498,7 +544,7 @@ export default function Portfolio() {
               <Button
                 className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white border-none"
                 size="lg"
-                onClick={() => scrollToSection(projectsRef)}
+                onClick={() => projectsRef && scrollToSection(projectsRef)}
               >
                 View My Works
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -508,7 +554,7 @@ export default function Portfolio() {
                 variant="outline"
                 size="lg"
                 className="border-purple-500/50 text-white hover:bg-purple-950/30"
-                onClick={() => scrollToSection(contactRef)}
+                onClick={() => contactRef && scrollToSection(contactRef)}
               >
                 Contact Me
               </Button>
