@@ -28,6 +28,11 @@ import vendcliq1 from "@/components/images/Vendcliq1.png"
 import vendcliq2 from "@/components/images/Vendcliq2.png"
 import vendcliq3 from "@/components/images/Vendcliq3.png"
 import vendcliq4 from "@/components/images/Vendcliq4.png"
+import symphomeimage from "@/components/images/symphomeimage.png"
+import symphomemusic from "@/components/images/symphomemusic.png"
+import symphomeAppPic1 from "@/components/images/symphomeAppPicture.png"
+import symphomeAppPic2 from "@/components/images/symphomeapppic2.png"
+import symphomeAppPic3 from "@/components/images/symphomeAppPic3.png"
 
 // Existing project image imports
 import curate from "@/components/images/zeitprotocol.png"
@@ -141,6 +146,112 @@ export default function Portfolio() {
   ))}
 
   const projects = [
+    // FEATURED: Symphome Web (FIRST - Best showcase)
+    {
+      id: 19,
+      title: "Symphome Music Platform",
+      description:
+        "A beautiful music streaming and discovery web application featuring an intuitive interface for browsing, playing, and managing your music collection. Built with modern web technologies for seamless audio playback experience.",
+      image: symphomemusic.src,
+      tags: ["Next.js", "Music Streaming", "Audio Player", "Web Platform"],
+      demoLink: "#",
+      codeLink: "#",
+      category: "Web Apps",
+      screenshots: [
+        symphomemusic.src,
+        symphomeimage.src
+      ]
+    },
+    // FEATURED: Symphome Mobile App
+    {
+      id: 20,
+      title: "Symphome Music App",
+      description:
+        "Mobile companion to the Symphome platform. A feature-rich music streaming mobile application with elegant UI, offline playback, playlist management, and personalized recommendations. Experience your music library on the go.",
+      image: symphomeAppPic1.src,
+      tags: ["React Native", "Music Streaming", "Mobile App", "Audio Player"],
+      demoLink: "#",
+      codeLink: "#",
+      category: "Mobile Apps",
+      screenshots: [
+        symphomeAppPic1.src,
+        symphomeAppPic2.src,
+        symphomeAppPic3.src
+      ]
+    },
+    // TOP TIER: Ace Embedded Systems
+    {
+      id: 8,
+      title: "Ace Embedded Systems",
+      description:
+        "IoT platform for industrial automation with real-time monitoring and predictive maintenance.",
+      image: Aceembeded.src,
+      tags: ["Embedded C", "RTOS", "Python", "MQTT"],
+      demoLink: "https://aceembedded.io/",
+      codeLink: "https://aceembedded.io/",
+      category: "Web Apps",
+    },
+    // TOP TIER: Syndeo Collaboration Suite
+    {
+      id: 7,
+      title: "Syndeo Collaboration Suite",
+      description:
+        "Decentralized collaboration platform with integrated project management and DAO governance features.",
+      image: syndeo.src,
+      tags: ["Solidity", "IPFS", "React", "Node.js"],
+      demoLink: "https://www.syndeoltd.com/",
+      codeLink: "https://www.syndeoltd.com/",
+      category: "DApps",
+    },
+    // TOP TIER: SkyEyez Analytics
+    {
+      id: 6,
+      title: "SkyEyez Analytics Platform",
+      description:
+        "Advanced aerial data analysis platform for real-time drone analytics and geospatial intelligence.",
+      image: skyeyez.src,
+      tags: ["Next.js", "Python", "GIS", "TensorFlow"],
+      demoLink: "https://skyeyez.ai/",
+      codeLink: "https://skyeyez.ai/",
+      category: "Web Apps",
+    },
+    // Mobile Apps Section (grouped together near top)
+    {
+      id: 17,
+      title: "Lucky Bag App",
+      description:
+        "A mobile app featuring lucky bag mechanics with multiple screens showcasing user interface, game mechanics, and interactive elements. The app includes various screens for gameplay, rewards, and user engagement.",
+      image: luckybag1.src,
+      tags: ["React Native", "Mobile UI", "Gaming", "Interactive"],
+      demoLink: "#",
+      codeLink: "#",
+      category: "Mobile Apps",
+      screenshots: [
+        luckybag1.src,
+        luckybag2.src,
+        luckybag3.src,
+        luckybag4.src,
+        luckybag5.src
+      ]
+    },
+    {
+      id: 18,
+      title: "Vend Cliq App",
+      description:
+        "A comprehensive mobile application with multiple interface screens showing different functionalities, user interactions, and app features. The app demonstrates various UI components and user experience flows.",
+      image: vendcliq1.src,
+      tags: ["Mobile App", "UI/UX", "React Native", "User Interface"],
+      demoLink: "#",
+      codeLink: "#",
+      category: "Mobile Apps",
+      screenshots: [
+        vendcliq1.src,
+        vendcliq2.src,
+        vendcliq3.src,
+        vendcliq4.src
+      ]
+    },
+    // HIGH IMPACT: BRIVAS
     {
       id: 10,
       title: "BRIVAS",

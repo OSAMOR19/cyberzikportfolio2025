@@ -18,28 +18,16 @@ export const useChristmas = () => {
 }
 
 export const ChristmasProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isChristmasMode, setIsChristmasMode] = useState(false)
+  // Always ON for Christmas season - no toggle needed
+  const [isChristmasMode] = useState(true)
   const [isMounted, setIsMounted] = useState(false)
 
-  // Load Christmas mode state from localStorage on mount
   useEffect(() => {
     setIsMounted(true)
-    if (typeof window !== 'undefined') {
-      const savedMode = localStorage.getItem('christmasMode')
-      if (savedMode === 'true') {
-        setIsChristmasMode(true)
-      }
-    }
   }, [])
 
   const toggleChristmasMode = () => {
-    setIsChristmasMode((prev) => {
-      const newValue = !prev
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('christmasMode', String(newValue))
-      }
-      return newValue
-    })
+    // No-op - Christmas mode is always on during the season
   }
 
   return (

@@ -15,7 +15,21 @@ export const ChristmasMusic = () => {
     if (typeof window !== 'undefined' && !audioRef.current) {
       audioRef.current = new Audio('https://www.bensound.com/bensound-music/bensound-christmastime.mp3')
       audioRef.current.loop = true
-      audioRef.current.volume = 0.3
+      audioRef.current.volume = 0.45 // Increased volume to 45%
+
+      // Auto-play with user interaction fallback
+      const playAudio = () => {
+        if (audioRef.current && !isPlaying) {
+          audioRef.current.play()
+            .then(() => setIsPlaying(true))
+            .catch(err => {
+              console.log('Auto-play blocked, click play button to start music')
+            })
+        }
+      }
+
+      // Try to play after a short delay
+      setTimeout(playAudio, 1500)
     }
 
     return () => {

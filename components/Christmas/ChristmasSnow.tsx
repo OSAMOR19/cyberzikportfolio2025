@@ -41,19 +41,19 @@ export const ChristmasSnow = () => {
     resizeCanvas()
     window.addEventListener('resize', resizeCanvas)
 
-    // Create snowflakes
+    // Create snowflakes - increased density
     const createSnowflakes = () => {
-      const count = Math.min(100, Math.floor(window.innerWidth / 15))
+      const count = Math.min(150, Math.floor(window.innerWidth / 10)) // More snowflakes!
       snowflakesRef.current = []
 
       for (let i = 0; i < count; i++) {
         snowflakesRef.current.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          radius: Math.random() * 3 + 1,
-          speed: Math.random() * 1 + 0.5,
-          drift: Math.random() * 0.5 - 0.25,
-          opacity: Math.random() * 0.6 + 0.4
+          radius: Math.random() * 3.5 + 1, // Slightly bigger snowflakes
+          speed: Math.random() * 1.2 + 0.5, // Slightly faster
+          drift: Math.random() * 0.6 - 0.3, // More drift
+          opacity: Math.random() * 0.7 + 0.4 // Slightly more visible
         })
       }
     }

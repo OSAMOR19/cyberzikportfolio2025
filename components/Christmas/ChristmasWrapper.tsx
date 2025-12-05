@@ -5,7 +5,7 @@ import { ChristmasGlow } from './ChristmasGlow'
 import { ChristmasSnow } from './ChristmasSnow'
 import { ChristmasMusic } from './ChristmasMusic'
 import { ChristmasDecorations } from './ChristmasDecorations'
-import { ChristmasToggle } from './ChristmasToggle'
+import { AnimatedSanta } from './AnimatedSanta'
 
 export const ChristmasWrapper = () => {
   const [isMounted, setIsMounted] = useState(false)
@@ -23,7 +23,7 @@ export const ChristmasWrapper = () => {
       <ChristmasGlow />
       <ChristmasSnow />
       <ChristmasDecorations />
-      <ChristmasToggle />
+      <AnimatedSanta />
       <ChristmasMusic />
     </>
   )
