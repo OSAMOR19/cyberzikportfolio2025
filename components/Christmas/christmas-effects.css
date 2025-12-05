@@ -1,0 +1,134 @@
+/* Christmas Sparkle Effect for Buttons */
+.christmas-sparkle-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.christmas-sparkle-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: width 0.6s, height 0.6s, opacity 0.6s;
+  pointer-events: none;
+}
+
+.christmas-sparkle-button:hover::before {
+  width: 300px;
+  height: 300px;
+  opacity: 0.3;
+}
+
+.christmas-sparkle-button::after {
+  content: '✨';
+  position: absolute;
+  font-size: 20px;
+  opacity: 0;
+  pointer-events: none;
+  animation: sparkle-float 1s ease-out forwards;
+}
+
+.christmas-sparkle-button:hover::after {
+  opacity: 1;
+}
+
+@keyframes sparkle-float {
+  0% {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: -20px;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Multiple sparkles on hover */
+.christmas-sparkle-button:hover {
+  animation: sparkle-burst 0.6s ease-out;
+}
+
+@keyframes sparkle-burst {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+  }
+  50% {
+    box-shadow: 0 0 20px 5px rgba(255, 215, 0, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+  }
+}
+
+/* Sparkle particles */
+.sparkle-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #ffd700;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particle-float 1s ease-out forwards;
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Button glow effect when Christmas mode is active */
+.christmas-button-glow {
+  position: relative;
+}
+
+.christmas-button-glow::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(45deg, #dc2626, #16a34a, #eab308, #dc2626);
+  background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: christmas-glow-rotate 3s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.christmas-button-glow:hover::before {
+  opacity: 0.6;
+}
+
+@keyframes christmas-glow-rotate {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

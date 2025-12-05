@@ -50,6 +50,9 @@ import { ThreeDScene } from "@/components/three-d-scene"
 import { Instagram, MessageCircle, Music2 } from "lucide-react"  // Add new icons
 import { Icon } from "@iconify/react"  // Add Iconify import
 
+// Christmas imports
+import { ChristmasWrapper, LogoWithSantaHat } from "@/components/Christmas"
+
 export default function Portfolio() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("home")
@@ -358,6 +361,9 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
+      {/* Christmas Effects Wrapper */}
+      <ChristmasWrapper />
+
       {/* Navigation */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-purple-900/30">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -365,13 +371,15 @@ export default function Portfolio() {
             href="/"
             className="flex items-center gap-2 text-2xl font-bold bg-gradient-to-r from-purple-500 to-cyan-500 text-transparent bg-clip-text"
           >
-            <Image 
-              src={cyberzikLogo} 
-              alt="Cyberzik Logo" 
-              width={40} 
-              height={40} 
-              className="object-contain"
-            />
+            <LogoWithSantaHat>
+              <Image
+                src={cyberzikLogo}
+                alt="Cyberzik Logo"
+                width={40}
+                height={40}
+                className="object-contain"
+              />
+            </LogoWithSantaHat>
             Cyberzik
           </Link>
 
@@ -497,13 +505,15 @@ export default function Portfolio() {
               transition={{ duration: 0.5 }}
               className="mb-8 flex justify-center"
             >
-              <Image 
-                src={cyberzikLogo} 
-                alt="Cyberzik Logo" 
-                width={120} 
-                height={120} 
-                className="object-contain animate-pulse-subtle"
-              />
+              <LogoWithSantaHat>
+                <Image
+                  src={cyberzikLogo}
+                  alt="Cyberzik Logo"
+                  width={120}
+                  height={120}
+                  className="object-contain animate-pulse-subtle"
+                />
+              </LogoWithSantaHat>
             </motion.div>
             
             <motion.div

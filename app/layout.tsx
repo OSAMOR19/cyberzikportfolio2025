@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import '../components/Christmas/christmas-effects.css'
+import { ChristmasProviderWrapper } from '@/components/Christmas'
 
 export const metadata: Metadata = {
   title: 'cyberzik',
@@ -14,7 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <ChristmasProviderWrapper>
+          {children}
+        </ChristmasProviderWrapper>
+      </body>
     </html>
   )
 }
