@@ -28,11 +28,6 @@ import vendcliq1 from "@/components/images/Vendcliq1.png"
 import vendcliq2 from "@/components/images/Vendcliq2.png"
 import vendcliq3 from "@/components/images/Vendcliq3.png"
 import vendcliq4 from "@/components/images/Vendcliq4.png"
-import symphomeimage from "@/components/images/symphomeimage.png"
-import symphomemusic from "@/components/images/symphomemusic.png"
-import symphomeAppPic1 from "@/components/images/symphomeAppPicture.png"
-import symphomeAppPic2 from "@/components/images/symphomeapppic2.png"
-import symphomeAppPic3 from "@/components/images/symphomeAppPic3.png"
 
 // Existing project image imports
 import curate from "@/components/images/zeitprotocol.png"
@@ -146,39 +141,6 @@ export default function Portfolio() {
   ))}
 
   const projects = [
-    // FEATURED: Symphome Web (FIRST - Best showcase)
-    {
-      id: 19,
-      title: "Symphome Music Platform",
-      description:
-        "A beautiful music streaming and discovery web application featuring an intuitive interface for browsing, playing, and managing your music collection. Built with modern web technologies for seamless audio playback experience.",
-      image: symphomemusic.src,
-      tags: ["Next.js", "Music Streaming", "Audio Player", "Web Platform"],
-      demoLink: "#",
-      codeLink: "#",
-      category: "Web Apps",
-      screenshots: [
-        symphomemusic.src,
-        symphomeimage.src
-      ]
-    },
-    // FEATURED: Symphome Mobile App
-    {
-      id: 20,
-      title: "Symphome Music App",
-      description:
-        "Mobile companion to the Symphome platform. A feature-rich music streaming mobile application with elegant UI, offline playback, playlist management, and personalized recommendations. Experience your music library on the go.",
-      image: symphomeAppPic1.src,
-      tags: ["React Native", "Music Streaming", "Mobile App", "Audio Player"],
-      demoLink: "#",
-      codeLink: "#",
-      category: "Mobile Apps",
-      screenshots: [
-        symphomeAppPic1.src,
-        symphomeAppPic2.src,
-        symphomeAppPic3.src
-      ]
-    },
     // TOP TIER: Ace Embedded Systems
     {
       id: 8,
