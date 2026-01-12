@@ -50,8 +50,7 @@ import { ThreeDScene } from "@/components/three-d-scene"
 import { Instagram, MessageCircle, Music2 } from "lucide-react"  // Add new icons
 import { Icon } from "@iconify/react"  // Add Iconify import
 
-// Christmas imports
-import { ChristmasWrapper, LogoWithSantaHat } from "@/components/Christmas"
+
 
 export default function Portfolio() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -115,30 +114,32 @@ export default function Portfolio() {
   }
 
   // In the navigation section, update the button props:
-  {[
-    { name: "Home", ref: heroRef, id: "home" },
-    { name: "About", ref: aboutRef, id: "about" },
-    { name: "Skills", ref: skillsRef, id: "skills" },
-    { name: "Projects", ref: projectsRef, id: "projects" },
-    { name: "Contact", ref: contactRef, id: "contact" },
-  ].map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => item.ref && scrollToSection(item.ref)}
-                  className={cn(
-                    "text-sm font-medium relative transition-colors hover:text-purple-400",
-                    activeSection === item.id ? "text-purple-400" : "text-gray-400",
-                  )}
-                >
-      {item.name}
-      {activeSection === item.id && (
-        <motion.div
-          layoutId="activeSection"
-          className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-cyan-500"
-        />
-      )}
-    </button>
-  ))}
+  {
+    [
+      { name: "Home", ref: heroRef, id: "home" },
+      { name: "About", ref: aboutRef, id: "about" },
+      { name: "Skills", ref: skillsRef, id: "skills" },
+      { name: "Projects", ref: projectsRef, id: "projects" },
+      { name: "Contact", ref: contactRef, id: "contact" },
+    ].map((item) => (
+      <button
+        key={item.name}
+        onClick={() => item.ref && scrollToSection(item.ref)}
+        className={cn(
+          "text-sm font-medium relative transition-colors hover:text-purple-400",
+          activeSection === item.id ? "text-purple-400" : "text-gray-400",
+        )}
+      >
+        {item.name}
+        {activeSection === item.id && (
+          <motion.div
+            layoutId="activeSection"
+            className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-cyan-500"
+          />
+        )}
+      </button>
+    ))
+  }
 
   const projects = [
     // TOP TIER: Ace Embedded Systems
@@ -349,7 +350,7 @@ export default function Portfolio() {
     {
       id: 6,
       title: "SkyEyez Analytics Platform",
-      description: 
+      description:
         "Advanced aerial data analysis platform for real-time drone analytics and geospatial intelligence.",
       image: skyeyez.src,
       tags: ["Next.js", "Python", "GIS", "TensorFlow"],
@@ -425,7 +426,7 @@ export default function Portfolio() {
         vendcliq4.src
       ]
     }
-]
+  ]
 
   const [filter, setFilter] = useState("All")
   const categories = ["All", "Web Apps", "E-commerce", "DApps", "Mobile Apps"]
@@ -434,8 +435,7 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
-      {/* Christmas Effects Wrapper */}
-      <ChristmasWrapper />
+
 
       {/* Navigation */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-purple-900/30">
@@ -444,15 +444,13 @@ export default function Portfolio() {
             href="/"
             className="flex items-center gap-2 text-2xl font-bold bg-gradient-to-r from-purple-500 to-cyan-500 text-transparent bg-clip-text"
           >
-            <LogoWithSantaHat>
-              <Image
-                src={cyberzikLogo}
-                alt="Cyberzik Logo"
-                width={40}
-                height={40}
-                className="object-contain"
-              />
-            </LogoWithSantaHat>
+            <Image
+              src={cyberzikLogo}
+              alt="Cyberzik Logo"
+              width={40}
+              height={40}
+              className="object-contain"
+            />
             Cyberzik
           </Link>
 
@@ -490,15 +488,15 @@ export default function Portfolio() {
                     "text-sm font-medium relative transition-colors hover:text-purple-400",
                     activeSection === item.id ? "text-purple-400" : "text-gray-400",
                   )}
-              >
-                {item.name}
-                {activeSection === item.id && (
-                  <motion.div
-                    layoutId="activeSection"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-cyan-500"
-                  />
-                )}
-              </button>
+                >
+                  {item.name}
+                  {activeSection === item.id && (
+                    <motion.div
+                      layoutId="activeSection"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-cyan-500"
+                    />
+                  )}
+                </button>
               )
             ))}
           </nav>
@@ -578,17 +576,15 @@ export default function Portfolio() {
               transition={{ duration: 0.5 }}
               className="mb-8 flex justify-center"
             >
-              <LogoWithSantaHat>
-                <Image
-                  src={cyberzikLogo}
-                  alt="Cyberzik Logo"
-                  width={120}
-                  height={120}
-                  className="object-contain animate-pulse-subtle"
-                />
-              </LogoWithSantaHat>
+              <Image
+                src={cyberzikLogo}
+                alt="Cyberzik Logo"
+                width={120}
+                height={120}
+                className="object-contain animate-pulse-subtle"
+              />
             </motion.div>
-            
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
