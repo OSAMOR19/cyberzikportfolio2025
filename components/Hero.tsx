@@ -12,7 +12,6 @@ export default function Hero() {
         cursorCharacter="|"
         text={["Hi, I'm Cyberzik, a Software Engineer."]}
         deletingSpeed={50}
-        variableSpeedEnabled={false}
         startOnVisible
         className="max-w-4xl text-center font-orbitron font-bold tracking-tight leading-[1.05] text-[#f5a764] text-4xl sm:text-5xl md:text-6xl lg:text-7xl"
       />
