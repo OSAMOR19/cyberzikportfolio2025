@@ -43,7 +43,7 @@ const projects = [
   {
     title: "Cybernovr",
     description:
-      "Cybersecurity company website with premium UI and smooth user experience.",
+      "Cybersecurity company website with premium UI and smooth user experience.lets give it a try",
     tech: ["Next.js", "Framer Motion"],
     images: [
       "/projects/project3.png",
