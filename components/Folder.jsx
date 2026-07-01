@@ -23,6 +23,13 @@ const darkenColor = (hex, percent) => {
   );
 };
 
+/**
+ * @param {Object} props
+ * @param {string} [props.color]
+ * @param {number} [props.size]
+ * @param {(string | null)[]} [props.items]
+ * @param {string} [props.className]
+ */
 const Folder = ({
   color = "#5227FF",
   size = 1,
