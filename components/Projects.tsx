@@ -32,6 +32,7 @@ const projects: Project[] = [
     images: [
       "/projects/rootsai1.png",
       "/projects/rootsai2.png",
+      "/projects/rootsai3.png",
     ],
     live: "#",
   },
@@ -78,9 +79,10 @@ const projects: Project[] = [
       "Hackathon landing page showcasing innovation and startup ideas.",
     tech: ["React", "Tailwind"],
     images: [
-      "/projects/project5.png",
-      "/projects/project5.2.png",
-      "/projects/project5.1.png",
+      "/projects/cre8core1.png",
+      "/projects/cre8core2.png",
+      "/projects/cre8core3.png",
+      "/projects/cre8core4.png",
     ],
     live: "https://cre8core.fun",
   },

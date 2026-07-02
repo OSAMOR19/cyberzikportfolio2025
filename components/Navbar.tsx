@@ -23,7 +23,7 @@ function Navbar() {
           />
 
           <p className="font-orbitron text-sm font-semibold text-white md:text-base">
-            HERO
+            HOME
           </p>
 
           <button
