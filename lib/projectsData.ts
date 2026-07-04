@@ -6,6 +6,7 @@ export interface Project {
   about: string;
   tech: string[];
   images: string[];
+  orientation: "landscape" | "portrait";
   live?: string;
   playStore?: string;
   appStore?: string;
@@ -22,6 +23,7 @@ export const projects: Project[] = [
     about:
       "SymphoMe is a comprehensive music education platform that bridges the gap between aspiring musicians and experienced tutors. Built with a focus on seamless user experience, the platform enables students to discover tutors, book lessons, and track their musical journey — all in one place. The interface was crafted to feel inviting and professional, with real-time scheduling, payment integration, and progress tracking features.",
     tech: ["Next.js", "TypeScript", "Tailwind"],
+    orientation: "landscape",
     images: [
       "/projects/symphome1.png",
       "/projects/symphome2.png",
@@ -41,6 +43,7 @@ export const projects: Project[] = [
     about:
       "Roots AI harnesses the power of artificial intelligence and machine learning to deliver intelligent, data-driven solutions. The platform features automated workflows, predictive analytics, and smart decision-making tools designed for businesses looking to leverage AI without the complexity. From data ingestion to actionable insights, every step of the pipeline was built for speed and accuracy.",
     tech: ["Next.js", "AI/ML", "Python"],
+    orientation: "landscape",
     images: [
       "/projects/rootsai1.png",
       "/projects/rootsai2.png",
@@ -57,6 +60,7 @@ export const projects: Project[] = [
     about:
       "VendCliq is a mobile-first commerce platform designed to simplify vendor management and amplify customer engagement. Available on both iOS and Android, the app empowers vendors to manage inventory, process orders, and connect with customers in real-time. The sleek, intuitive interface was built with React Native for a truly native feel across platforms, with Firebase powering the real-time backend.",
     tech: ["React Native", "Node.js", "Firebase"],
+    orientation: "portrait",
     images: [
       "/projects/vendcliq1.webp",
       "/projects/vendcliq2.webp",
@@ -76,6 +80,7 @@ export const projects: Project[] = [
     about:
       "WBH Web is a powerful web application built to deliver a complete digital experience. The platform features a modern, responsive interface with intuitive navigation, real-time data updates, and seamless user workflows. Every detail — from the dashboard layouts to the interactive components — was designed to provide a premium, professional experience that scales across devices and screen sizes.",
     tech: ["Next.js", "TypeScript", "Tailwind", "Node.js"],
+    orientation: "landscape",
     images: [
       "/projects/wbhweb1.png",
       "/projects/wbhweb2.png",
@@ -92,6 +97,7 @@ export const projects: Project[] = [
     about:
       "WBH Mobile brings the full WBH experience to your pocket. Designed as a standalone mobile application, it delivers fluid navigation, push notifications, and offline-capable features. The app was built with a mobile-first approach, ensuring every interaction feels natural and responsive — from quick actions to detailed views. The UI prioritizes ease of use while maintaining the premium feel of the web counterpart.",
     tech: ["React Native", "TypeScript", "Firebase"],
+    orientation: "portrait",
     images: [
       "/projects/wbhmobile1.png",
       "/projects/wbhmobile2.png",
@@ -107,6 +113,7 @@ export const projects: Project[] = [
     about:
       "Cybernovr is a cybersecurity company website that communicates trust, expertise, and cutting-edge protection through its design. The site features premium animations powered by Framer Motion, a sophisticated dark aesthetic, and clear information architecture that guides visitors from awareness to engagement. Every section was crafted to convey the company's authority in the cybersecurity space.",
     tech: ["Next.js", "Framer Motion"],
+    orientation: "landscape",
     images: [
       "/projects/project3.png",
       "/projects/project3.1.png",
@@ -123,6 +130,7 @@ export const projects: Project[] = [
     about:
       "CR8CORELABS is a vibrant hackathon landing page designed to inspire and attract innovators, developers, and entrepreneurs. The page features bold visuals, dynamic animations, and clear calls-to-action that drive registrations. Built with React and Tailwind, the design captures the energy and excitement of the hackathon while providing all essential event information in an engaging format.",
     tech: ["React", "Tailwind"],
+    orientation: "landscape",
     images: [
       "/projects/cre8core1.png",
       "/projects/cre8core2.png",
@@ -140,6 +148,7 @@ export const projects: Project[] = [
     about:
       "Royal Fits is a full-featured e-commerce platform that delivers a modern, engaging shopping experience. From product browsing with smooth transitions to a streamlined checkout flow powered by Stripe, every touchpoint was designed for conversion. The platform includes inventory management, order tracking, and responsive design that looks stunning on every device.",
     tech: ["React", "Node", "Stripe"],
+    orientation: "landscape",
     images: [
       "/projects/project6.png",
       "/projects/project6.2.png",
@@ -156,6 +165,7 @@ export const projects: Project[] = [
     about:
       "Syndeo Collaboration is a business productivity platform built for teams that value efficient workflows and clear communication. The platform offers project management tools, real-time collaboration features, and workflow automation — all wrapped in a clean, intuitive interface. Built with Next.js and MongoDB, it handles complex data relationships while maintaining snappy performance.",
     tech: ["Next.js", "Node", "MongoDB"],
+    orientation: "landscape",
     images: [
       "/projects/project2.png",
       "/projects/project2.1.png",
@@ -172,6 +182,7 @@ export const projects: Project[] = [
     about:
       "Play2Learn gamifies the educational experience, turning traditional learning into interactive, engaging gameplay. The platform features progress tracking, achievement systems, and adaptive difficulty that keeps learners motivated. Built with React and Firebase, it delivers real-time updates and seamless cross-device synchronization for learners of all ages.",
     tech: ["React", "Firebase"],
+    orientation: "landscape",
     images: [
       "/projects/project4.png",
       "/projects/project4.1.png",

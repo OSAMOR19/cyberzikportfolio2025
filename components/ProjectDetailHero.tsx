@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useLayoutEffect } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { gsap } from "gsap";
@@ -17,39 +17,27 @@ interface ProjectDetailHeroProps {
 
 export default function ProjectDetailHero({ project }: ProjectDetailHeroProps) {
   const heroRef = useRef<HTMLDivElement>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
+  const marqueeRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const categoryRef = useRef<HTMLSpanElement>(null);
   const aboutRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
 
   const { prev, next } = getAdjacentProjects(project.slug);
+  const isPortrait = project.orientation === "portrait";
+
+  // Duplicate images enough times for seamless loop
+  const duplicatedImages = [...project.images, ...project.images, ...project.images];
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // ---- Carousel entrance animation ----
-      const cards = carouselRef.current?.querySelectorAll(".carousel-card");
-      if (cards && cards.length > 0) {
-        // Set initial state — all cards hidden, scaled down, extra rotation
-        gsap.set(cards, {
-          opacity: 0,
-          scale: 0.6,
-          y: 80,
-        });
-
-        // Stagger in the cards
-        gsap.to(cards, {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          duration: 1.2,
-          ease: "power4.out",
-          stagger: {
-            each: 0.1,
-            from: "center",
-          },
-          delay: 0.3,
-        });
+      // ---- Marquee entrance animation ----
+      if (marqueeRef.current) {
+        gsap.fromTo(
+          marqueeRef.current,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 1, ease: "power3.out", delay: 0.2 }
+        );
       }
 
       // ---- Category badge entrance ----
@@ -57,7 +45,7 @@ export default function ProjectDetailHero({ project }: ProjectDetailHeroProps) {
         gsap.fromTo(
           categoryRef.current,
           { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.8 }
+          { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.6 }
         );
       }
 
@@ -66,7 +54,7 @@ export default function ProjectDetailHero({ project }: ProjectDetailHeroProps) {
         gsap.fromTo(
           titleRef.current,
           { opacity: 0, y: 50 },
-          { opacity: 1, y: 0, duration: 1, ease: "power3.out", delay: 1 }
+          { opacity: 1, y: 0, duration: 1, ease: "power3.out", delay: 0.8 }
         );
       }
 
@@ -117,25 +105,6 @@ export default function ProjectDetailHero({ project }: ProjectDetailHeroProps) {
     return () => ctx.revert();
   }, [project.slug]);
 
-  // ---- Compute carousel card positions ----
-  const getCardTransform = (index: number, total: number) => {
-    const center = (total - 1) / 2;
-    const offset = index - center;
-    const rotateY = offset * 28;
-    const translateX = offset * 160;
-    const translateZ = -Math.abs(offset) * 80;
-    const scale = 1 - Math.abs(offset) * 0.08;
-    const brightness = 1 - Math.abs(offset) * 0.15;
-
-    return {
-      transform: `translate(-50%, -50%) translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
-      zIndex: total - Math.abs(Math.round(offset)),
-      filter: `brightness(${brightness})`,
-    };
-  };
-
-  const displayImages = project.images.slice(0, 5);
-
   return (
     <div className="project-detail" ref={heroRef}>
       {/* Back Button */}
@@ -156,27 +125,36 @@ export default function ProjectDetailHero({ project }: ProjectDetailHeroProps) {
 
       {/* Hero */}
       <section className="project-detail__hero">
-        {/* 3D Carousel */}
-        <div className="carousel-container" ref={carouselRef}>
-          <div className="carousel-track">
-            {displayImages.map((img, i) => {
-              const style = getCardTransform(i, displayImages.length);
-              return (
-                <div
-                  key={i}
-                  className="carousel-card"
-                  style={style}
-                >
-                  <Image
-                    src={img}
-                    alt={`${project.title} screenshot ${i + 1}`}
-                    fill
-                    sizes="(max-width: 768px) 180px, 280px"
-                    priority={i === Math.floor(displayImages.length / 2)}
-                  />
-                </div>
-              );
-            })}
+        {/* Continuous Sliding Carousel */}
+        <div className="marquee-carousel" ref={marqueeRef}>
+          <div
+            className="marquee-track"
+            style={{
+              animationDuration: `${project.images.length * 8}s`,
+            }}
+          >
+            {duplicatedImages.map((img, i) => (
+              <div
+                key={i}
+                className={`carousel-slide ${
+                  isPortrait
+                    ? "carousel-slide--portrait"
+                    : "carousel-slide--landscape"
+                }`}
+              >
+                <Image
+                  src={img}
+                  alt={`${project.title} screenshot ${(i % project.images.length) + 1}`}
+                  fill
+                  sizes={
+                    isPortrait
+                      ? "(max-width: 768px) 140px, 180px"
+                      : "(max-width: 768px) 320px, 480px"
+                  }
+                  priority={i < project.images.length}
+                />
+              </div>
+            ))}
           </div>
         </div>
 
@@ -257,14 +235,18 @@ export default function ProjectDetailHero({ project }: ProjectDetailHeroProps) {
 
         {/* Screenshot Gallery */}
         <div className="project-detail__gallery" ref={galleryRef}>
-          <div className="gallery-grid">
+          <div
+            className={`gallery-grid ${
+              isPortrait ? "gallery-grid--portrait" : "gallery-grid--landscape"
+            }`}
+          >
             {project.images.map((img, i) => (
               <div key={i} className="gallery-item">
                 <Image
                   src={img}
                   alt={`${project.title} screenshot ${i + 1}`}
-                  width={600}
-                  height={400}
+                  width={isPortrait ? 360 : 800}
+                  height={isPortrait ? 720 : 440}
                   style={{ width: "100%", height: "auto" }}
                 />
               </div>
