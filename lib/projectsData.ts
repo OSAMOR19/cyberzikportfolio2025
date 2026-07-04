@@ -37,19 +37,19 @@ export const projects: Project[] = [
   {
     slug: "roots-ai",
     title: "Roots AI",
-    category: "AI / Machine Learning",
+    category: "Music / AI",
     description:
-      "AI-powered platform leveraging intelligent automation to deliver smart, data-driven solutions.",
+      "AI-powered African drum plugin for music producers — smart sample discovery, BPM matching, and authentic percussion loops.",
     about:
-      "Roots AI harnesses the power of artificial intelligence and machine learning to deliver intelligent, data-driven solutions. The platform features automated workflows, predictive analytics, and smart decision-making tools designed for businesses looking to leverage AI without the complexity. From data ingestion to actionable insights, every step of the pipeline was built for speed and accuracy.",
-    tech: ["Next.js", "AI/ML", "Python"],
+      "Roots AI is an AI-powered African drum web application and plugin built for music producers and beatmakers. Developed by Manifxt Audio, it uses AI as a smart recommendation engine to match producers with authentic, human-recorded African percussive drum loops across genres like Afrobeats, Amapiano, Afrohouse, and Miliki. Producers can search via text prompts or upload their melody tracks for automatic BPM detection and loop matching. Every loop in the library is recorded by real musicians and professionally mixed — no synthetic AI-generated patterns. The platform also supports multi-track stem downloads and drag-and-drop workflow integration with DAWs like Ableton, FL Studio, and Logic Pro.",
+    tech: ["Next.js", "AI/ML", "Python", "TypeScript"],
     orientation: "landscape",
     images: [
       "/projects/rootsai1.png",
       "/projects/rootsai2.png",
       "/projects/rootsai3.png",
     ],
-    live: "#",
+    live: "https://rootsai.space",
   },
   {
     slug: "vendcliq",
@@ -124,11 +124,11 @@ export const projects: Project[] = [
   {
     slug: "cre8corelabs",
     title: "CR8CORELABS",
-    category: "Innovation",
+    category: "Web3 / Onchain",
     description:
-      "Hackathon landing page showcasing innovation and startup ideas.",
+      "The creative engine powering the next generation of builders and creators onchain.",
     about:
-      "CR8CORELABS is a vibrant hackathon landing page designed to inspire and attract innovators, developers, and entrepreneurs. The page features bold visuals, dynamic animations, and clear calls-to-action that drive registrations. Built with React and Tailwind, the design captures the energy and excitement of the hackathon while providing all essential event information in an engaging format.",
+      "Cre8core Labs is the creative engine powering the next generation of builders and creators onchain. At Cre8core, we connect talented individuals with high-impact opportunities, from bounties and grants to gigs and collaborations with top projects onchain. Our platform equips the onchain ecosystem with a reliable way to source talent, amplify innovation, and reward meaningful contributions. Whether you're a storyteller, designer, developer, or community builder, Cre8core Labs gives you the tools, incentives, and access to high-paying opportunities to thrive.",
     tech: ["React", "Tailwind"],
     orientation: "landscape",
     images: [
