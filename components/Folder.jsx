@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./Folder.css";
 import Image from "next/image";
 
@@ -43,21 +43,36 @@ const Folder = ({
   }
 
   const [open, setOpen] = useState(false);
+  const folderRef = useRef(null);
   const [paperOffsets, setPaperOffsets] = useState(
     Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })),
   );
+
+  // Open on scroll into view
+  useEffect(() => {
+    const el = folderRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setOpen(true);
+        } else {
+          setOpen(false);
+          setPaperOffsets(Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })));
+        }
+      },
+      { threshold: 0.4 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const folderBackColor = darkenColor(color, 0.08);
   const paper1 = darkenColor("#ffffff", 0.1);
   const paper2 = darkenColor("#ffffff", 0.05);
   const paper3 = "#ffffff";
-
-  const handleClick = () => {
-    setOpen((prev) => !prev);
-    if (open) {
-      setPaperOffsets(Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })));
-    }
-  };
 
   const handlePaperMouseMove = (e, index) => {
     if (!open) return;
@@ -93,22 +108,13 @@ const Folder = ({
   const scaleStyle = { transform: `scale(${size})` };
 
   return (
-    <div style={scaleStyle} className={className}>
+    <div style={scaleStyle} className={className} ref={folderRef}>
       <div
         className={folderClassName}
         style={folderStyle}
-        onClick={handleClick}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-
-            handleClick();
-          }
-        }}
         tabIndex={0}
-        role="button"
-        aria-expanded={open}
-        aria-label={open ? "Close folder" : "Open folder"}
+        role="img"
+        aria-label={open ? "Folder open" : "Folder closed"}
       >
         <div className="folder__back">
           {papers.map((item, i) => (
@@ -146,3 +152,4 @@ const Folder = ({
 };
 
 export default Folder;
+

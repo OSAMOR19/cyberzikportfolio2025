@@ -13,12 +13,12 @@ export default function Contact() {
     {
       name: "Github",
       icon: <FaGithub size={22} />,
-      link: "https://github.com/",
+      link: "https://github.com/OSAMOR19",
     },
     {
       name: "LinkedIn",
       icon: <FaLinkedin size={22} />,
-      link: "https://linkedin.com/",
+      link: "https://www.linkedin.com/in/peter-osamor-isaac-chukwuka-003ab51a4/",
     },
     {
       name: "Twitter",

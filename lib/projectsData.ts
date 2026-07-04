@@ -39,7 +39,7 @@ export const projects: Project[] = [
     title: "Roots AI",
     category: "Music / AI",
     description:
-      "AI-powered African drum plugin for music producers — smart sample discovery, BPM matching, and authentic percussion loops.",
+      "AI-powered African drum plugin for music producers smart sample discovery, BPM matching, and authentic percussion loops.",
     about:
       "Roots AI is an AI-powered African drum web application and plugin built for music producers and beatmakers. Developed by Manifxt Audio, it uses AI as a smart recommendation engine to match producers with authentic, human-recorded African percussive drum loops across genres like Afrobeats, Amapiano, Afrohouse, and Miliki. Producers can search via text prompts or upload their melody tracks for automatic BPM detection and loop matching. Every loop in the library is recorded by real musicians and professionally mixed — no synthetic AI-generated patterns. The platform also supports multi-track stem downloads and drag-and-drop workflow integration with DAWs like Ableton, FL Studio, and Logic Pro.",
     tech: ["Next.js", "AI/ML", "Python", "TypeScript"],
@@ -48,6 +48,10 @@ export const projects: Project[] = [
       "/projects/rootsai1.png",
       "/projects/rootsai2.png",
       "/projects/rootsai3.png",
+      "/projects/rootsai5.png",
+      "/projects/rootsai6.png",
+      "/projects/rootsai7.png",
+      "/projects/rootsai8.png",
     ],
     live: "https://rootsai.space",
   },
@@ -72,14 +76,32 @@ export const projects: Project[] = [
     appStore: "https://apps.apple.com/ng/app/vendcliq-app/id6758526174",
   },
   {
+    slug: "cre8corelabs",
+    title: "CR8CORELABS",
+    category: "Web3 / Onchain",
+    description:
+      "The creative engine powering the next generation of builders and creators onchain.",
+    about:
+      "Cre8core Labs is the creative engine powering the next generation of builders and creators onchain. At Cre8core, we connect talented individuals with high-impact opportunities, from bounties and grants to gigs and collaborations with top projects onchain. Our platform equips the onchain ecosystem with a reliable way to source talent, amplify innovation, and reward meaningful contributions. Whether you're a storyteller, designer, developer, or community builder, Cre8core Labs gives you the tools, incentives, and access to high-paying opportunities to thrive.",
+    tech: ["React", "Tailwind"],
+    orientation: "landscape",
+    images: [
+      "/projects/cre8core1.png",
+      "/projects/cre8core2.png",
+      "/projects/cre8core3.png",
+      "/projects/cre8core4.png",
+    ],
+    live: "https://cre8core.fun",
+  },
+  {
     slug: "wbh-web",
     title: "WBH Web",
-    category: "Web Application",
+    category: "AI / Skincare",
     description:
-      "Full-featured web platform delivering a comprehensive digital experience with modern UI and robust functionality.",
+      "AI-powered skin detection web platform that scans users' faces to identify skin defects and recommends targeted treatments.",
     about:
-      "WBH Web is a powerful web application built to deliver a complete digital experience. The platform features a modern, responsive interface with intuitive navigation, real-time data updates, and seamless user workflows. Every detail — from the dashboard layouts to the interactive components — was designed to provide a premium, professional experience that scales across devices and screen sizes.",
-    tech: ["Next.js", "TypeScript", "Tailwind", "Node.js"],
+      "WBH Web is an AI-powered skin analysis platform that uses advanced machine learning to scan users' faces and detect a wide range of skin defects and conditions. Once the AI identifies issues such as acne, hyperpigmentation, dryness, or other concerns, it provides a detailed diagnosis and recommends the best skincare products and treatments tailored to each user's unique skin profile. The web platform features an intuitive interface, real-time camera integration, and a comprehensive product recommendation engine.",
+    tech: ["Next.js", "TypeScript", "Tailwind", "AI/ML"],
     orientation: "landscape",
     images: [
       "/projects/wbhweb1.png",
@@ -91,12 +113,12 @@ export const projects: Project[] = [
   {
     slug: "wbh-mobile",
     title: "WBH Mobile",
-    category: "Mobile App",
+    category: "AI / Skincare",
     description:
-      "Native mobile application providing on-the-go access with a fluid, intuitive mobile experience.",
+      "AI skin detection mobile app that scans your face, identifies skin issues, and recommends the best treatment products.",
     about:
-      "WBH Mobile brings the full WBH experience to your pocket. Designed as a standalone mobile application, it delivers fluid navigation, push notifications, and offline-capable features. The app was built with a mobile-first approach, ensuring every interaction feels natural and responsive — from quick actions to detailed views. The UI prioritizes ease of use while maintaining the premium feel of the web counterpart.",
-    tech: ["React Native", "TypeScript", "Firebase"],
+      "WBH Mobile brings the AI-powered skin analysis experience to your phone. The app uses your device's camera to scan your face in real-time, leveraging AI to detect skin defects such as acne, dark spots, wrinkles, and other conditions. After the scan, it provides a personalized diagnosis and recommends the best skincare products to treat each identified issue. Built with React Native for a smooth, native experience on both iOS and Android, the app prioritizes ease of use with a clean, intuitive interface.",
+    tech: ["React Native", "TypeScript", "AI/ML"],
     orientation: "portrait",
     images: [
       "/projects/wbhmobile1.png",
@@ -121,24 +143,7 @@ export const projects: Project[] = [
     ],
     live: "https://www.cybernovr.com/",
   },
-  {
-    slug: "cre8corelabs",
-    title: "CR8CORELABS",
-    category: "Web3 / Onchain",
-    description:
-      "The creative engine powering the next generation of builders and creators onchain.",
-    about:
-      "Cre8core Labs is the creative engine powering the next generation of builders and creators onchain. At Cre8core, we connect talented individuals with high-impact opportunities, from bounties and grants to gigs and collaborations with top projects onchain. Our platform equips the onchain ecosystem with a reliable way to source talent, amplify innovation, and reward meaningful contributions. Whether you're a storyteller, designer, developer, or community builder, Cre8core Labs gives you the tools, incentives, and access to high-paying opportunities to thrive.",
-    tech: ["React", "Tailwind"],
-    orientation: "landscape",
-    images: [
-      "/projects/cre8core1.png",
-      "/projects/cre8core2.png",
-      "/projects/cre8core3.png",
-      "/projects/cre8core4.png",
-    ],
-    live: "https://cre8core.fun",
-  },
+
   {
     slug: "royal-fits",
     title: "Royal Fits",

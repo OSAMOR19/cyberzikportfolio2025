@@ -11,11 +11,11 @@ const Footer = () => {
     },
     {
       icon: <FaLinkedin />,
-      link: "https://linkedin.com/",
+      link: "https://www.linkedin.com/in/peter-osamor-isaac-chukwuka-003ab51a4/",
     },
     {
       icon: <FaGithub />,
-      link: "https://github.com/",
+      link: "https://github.com/OSAMOR19",
     },
   ];
 
@@ -113,19 +113,19 @@ const Footer = () => {
 
             <ul className="space-y-3 text-gray-400">
               <li>
-                <a href="#" className="hover:text-[#f5a764]">
+                <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" className="hover:text-[#f5a764]">
                   Twitter
                 </a>
               </li>
 
               <li>
-                <a href="#" className="hover:text-[#f5a764]">
+                <a href="https://www.linkedin.com/in/peter-osamor-isaac-chukwuka-003ab51a4/" target="_blank" rel="noopener noreferrer" className="hover:text-[#f5a764]">
                   LinkedIn
                 </a>
               </li>
 
               <li>
-                <a href="#" className="hover:text-[#f5a764]">
+                <a href="https://github.com/OSAMOR19" target="_blank" rel="noopener noreferrer" className="hover:text-[#f5a764]">
                   GitHub
                 </a>
               </li>

@@ -17,7 +17,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Isaac Osamor",
-  description: "Isaac Osamor",
+  description: "Isaac Osamor — Fullstack & Blockchain Developer",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({

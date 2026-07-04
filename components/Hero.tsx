@@ -17,9 +17,9 @@ export default function Hero() {
       />
 
       {/* CTA */}
-      <button className="mt-8 rounded-full bg-[#f5a764] px-8 py-3 text-base font-bold text-black transition-all duration-300 hover:scale-105 md:px-10 md:py-4 md:text-xl font-orbitron">
-        Let's Talk
-      </button>
+      <a href="#contact" className="mt-8 rounded-full bg-[#f5a764] px-8 py-3 text-base font-bold text-black transition-all duration-300 hover:scale-105 md:px-10 md:py-4 md:text-xl font-orbitron inline-block">
+        Let&apos;s Talk
+      </a>
 
       {/* Bottom Content */}
       <div className="mt-20 grid w-full max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-3">
