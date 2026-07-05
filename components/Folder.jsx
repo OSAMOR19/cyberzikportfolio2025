@@ -29,12 +29,14 @@ const darkenColor = (hex, percent) => {
  * @param {number} [props.size]
  * @param {(string | null)[]} [props.items]
  * @param {string} [props.className]
+ * @param {boolean} [props.open]
  */
 const Folder = ({
   color = "#5227FF",
   size = 1,
   items = [],
   className = "",
+  open = false,
 }) => {
   const maxItems = 3;
   const papers = items.slice(0, maxItems);
@@ -42,32 +44,16 @@ const Folder = ({
     papers.push(null);
   }
 
-  const [open, setOpen] = useState(false);
-  const folderRef = useRef(null);
   const [paperOffsets, setPaperOffsets] = useState(
     Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })),
   );
 
-  // Open on scroll into view
+  // Reset offsets when folder closes
   useEffect(() => {
-    const el = folderRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setOpen(true);
-        } else {
-          setOpen(false);
-          setPaperOffsets(Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })));
-        }
-      },
-      { threshold: 0.4 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+    if (!open) {
+      setPaperOffsets(Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })));
+    }
+  }, [open]);
 
   const folderBackColor = darkenColor(color, 0.08);
   const paper1 = darkenColor("#ffffff", 0.1);
@@ -108,7 +94,7 @@ const Folder = ({
   const scaleStyle = { transform: `scale(${size})` };
 
   return (
-    <div style={scaleStyle} className={className} ref={folderRef}>
+    <div style={scaleStyle} className={className}>
       <div
         className={folderClassName}
         style={folderStyle}

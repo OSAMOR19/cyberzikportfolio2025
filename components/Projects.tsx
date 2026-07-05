@@ -1,8 +1,63 @@
+"use client";
+
+import { useEffect, useRef, useState, useCallback } from "react";
 import Folder from "./Folder";
 import Link from "next/link";
 import { projects } from "@/lib/projectsData";
 
 export default function Projects() {
+  const [openIndex, setOpenIndex] = useState(-1);
+  const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const queueRef = useRef<number[]>([]);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Process the queue: open one folder at a time with a 400ms stagger
+  const processQueue = useCallback(() => {
+    if (queueRef.current.length === 0) return;
+
+    const nextIndex = queueRef.current.shift()!;
+    setOpenIndex(nextIndex);
+
+    if (queueRef.current.length > 0) {
+      timerRef.current = setTimeout(processQueue, 400);
+    }
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const index = Number(entry.target.getAttribute("data-index"));
+          if (isNaN(index)) return;
+
+          if (entry.isIntersecting) {
+            // Add to queue if not already queued or open
+            if (!queueRef.current.includes(index)) {
+              queueRef.current.push(index);
+              // Start processing if not already running
+              if (!timerRef.current) {
+                processQueue();
+              }
+            }
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    cardRefs.current.forEach((el) => {
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      observer.disconnect();
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [processQueue]);
+
   return (
     <section
       id="projects"
@@ -28,6 +83,10 @@ export default function Projects() {
           <Link
             key={index}
             href={`/projects/${project.slug}`}
+            ref={(el) => {
+              cardRefs.current[index] = el;
+            }}
+            data-index={index}
             className="group overflow-hidden rounded-3xl bg-white/[0.04] backdrop-blur-xl transition duration-500 hover:-translate-y-3 hover:border-[#f5a764]/60 hover:shadow-[0_0_45px_rgba(245,167,100,.15)] block"
           >
             <div className="flex justify-center pt-30">
@@ -36,6 +95,7 @@ export default function Projects() {
                 color="#f5c895"
                 items={project.images}
                 className="custom-folder"
+                open={openIndex >= index}
               />
             </div>
 
