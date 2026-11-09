@@ -1,5 +1,62 @@
+export type ProjectGroupId =
+  | "websites"
+  | "ecommerce"
+  | "education"
+  | "ai"
+  | "web3"
+  | "saas";
+
+export interface ProjectGroup {
+  id: ProjectGroupId;
+  label: string;
+  /** Shorter name used on the filter tabs. */
+  tab: string;
+  blurb: string;
+}
+
+// Display order of the sections on the home page.
+export const projectGroups: ProjectGroup[] = [
+  {
+    id: "websites",
+    label: "Websites & Landing Pages",
+    tab: "Websites",
+    blurb: "Brand, personal and company websites built to tell a story and convert visitors.",
+  },
+  {
+    id: "ecommerce",
+    label: "E-Commerce",
+    tab: "E-Commerce",
+    blurb: "Online stores and commerce platforms, from storefronts to vendor dashboards.",
+  },
+  {
+    id: "education",
+    label: "Education & Games",
+    tab: "Education & Games",
+    blurb: "Learning platforms and games that make education interactive.",
+  },
+  {
+    id: "ai",
+    label: "AI Products",
+    tab: "AI",
+    blurb: "Products with machine learning at the core: vision, audio and recommendations.",
+  },
+  {
+    id: "web3",
+    label: "Web3 & Blockchain",
+    tab: "Web3",
+    blurb: "Onchain apps, token tools and crypto-powered experiences.",
+  },
+  {
+    id: "saas",
+    label: "SaaS & Business Tools",
+    tab: "SaaS & Tools",
+    blurb: "Software that helps teams and small businesses run their day-to-day work.",
+  },
+];
+
 export interface Project {
   slug: string;
+  group: ProjectGroupId;
   title: string;
   category: string;
   description: string;
@@ -16,6 +73,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     slug: "symphome",
+    group: "education",
     title: "SymphoMe",
     category: "Music Education",
     description:
@@ -36,6 +94,7 @@ export const projects: Project[] = [
   },
   {
     slug: "roots-ai",
+    group: "ai",
     title: "Roots AI",
     category: "Music / AI",
     description:
@@ -57,6 +116,7 @@ export const projects: Project[] = [
   },
   {
     slug: "vendcliq",
+    group: "ecommerce",
     title: "VendCliq",
     category: "Mobile Commerce",
     description:
@@ -76,7 +136,126 @@ export const projects: Project[] = [
     appStore: "https://apps.apple.com/ng/app/vendcliq-app/id6758526174",
   },
   {
+    slug: "dr-jude-osamor",
+    group: "websites",
+    title: "Dr. Jude Osamor",
+    category: "Personal Brand",
+    description:
+      "Executive personal brand website for a VP of Cybersecurity, academic researcher and CyBlack co-founder.",
+    about:
+      "A personal brand website for Dr. Jude Osamor, Vice President of Cybersecurity at a Fortune 500 financial institution, senior lecturer and co-founder of the non-profit CyBlack. The site follows his official brand identity guidelines: a midnight navy and warm beige palette, editorial typography and a light/dark theme toggle. It presents his three brand pillars, the CyBlack mission and impact stats, his published research, and talks and podcast appearances, with an advisory and speaking enquiry flow and an executive briefing newsletter signup handled by Resend.",
+    tech: ["Next.js", "Tailwind", "Resend"],
+    orientation: "landscape",
+    images: [
+      "/projects/judeosamor1.jpg",
+      "/projects/judeosamor2.jpg",
+      "/projects/judeosamor3.jpg",
+      "/projects/judeosamor4.jpg",
+    ],
+    live: "https://judeosamor.vercel.app",
+  },
+  {
+    slug: "lilian-nneji",
+    group: "websites",
+    title: "Minister Lilian Nneji",
+    category: "Music / Artist Website",
+    description:
+      "Official website for a Nigerian gospel music minister: music, lyrics, gallery, awards and bookings.",
+    about:
+      "The official website of Minister Lilian Nneji, a Nigerian gospel music minister, songwriter and worship leader. The site opens with a bold full-bleed hero and a new album call-to-action, then leads fans through her biography, discography with streaming links, song lyrics, a concert photo gallery, an awards showcase and the latest music video. Churches and event organisers can book her directly through a booking form, and fans can join the newsletter or reach the team on WhatsApp. Content is managed through Supabase, emails go out through Resend, and the site is fully SEO-optimised for her name and songs.",
+    tech: ["Next.js", "Supabase", "Tailwind", "Resend"],
+    orientation: "landscape",
+    images: [
+      "/projects/liliannneji1.jpg",
+      "/projects/liliannneji2.jpg",
+      "/projects/liliannneji3.jpg",
+      "/projects/liliannneji4.jpg",
+    ],
+    live: "https://www.liliannneji.com",
+  },
+  {
+    slug: "247creativehub",
+    group: "websites",
+    title: "247CREATIVEHUB",
+    category: "Consultancy Website",
+    description:
+      "Marketing site for a Glasgow-based procurement and supply chain consultancy serving UK SMEs.",
+    about:
+      "247CREATIVEHUB is a procurement and supply chain consultancy based in Glasgow that helps UK SMEs reduce avoidable cost, improve supplier delivery, release working capital and make risk visible. The website explains its services (spend analysis, supplier performance, inventory optimisation and supply chain resilience), shows how a project runs, and covers the industries it serves, with an interactive \"connected supply view\" widget in the hero. It also hosts the Photography & Video page for the 247 CreativeHub Ltd UK sub-brand. Built with Astro as a fully static site, it ships only about 5 KB of JavaScript, and every section still renders with JavaScript turned off.",
+    tech: ["Astro", "TypeScript", "Lenis"],
+    orientation: "landscape",
+    images: [
+      "/projects/247creativehub1.jpg",
+      "/projects/247creativehub2.jpg",
+      "/projects/247creativehub3.jpg",
+      "/projects/247creativehub4.jpg",
+    ],
+    live: "https://247creativehub.vercel.app",
+  },
+  {
+    slug: "my-pocket-gallery",
+    group: "web3",
+    title: "My Pocket Gallery",
+    category: "Art / Web3",
+    description:
+      "Art collecting platform for Neftwerk: collector app, gallery owner portal and staff CMS on one backend.",
+    about:
+      "My Pocket Gallery is Neftwerk's platform for discovering, collecting and showcasing art. I worked across the ecosystem: the collector web app (forum, discover, gallery, wallet and profile), the React Native mobile app, the staff CMS (Neftwerk Control Plane), and the Gallery Portal, where gallery owners sign in with a passwordless email code via Privy. In the portal, owners can reply to collector enquiries, manage artists, collections and artworks, print QR labels for physical pieces, edit their public gallery profile, and submit KYB documents for verification. All three apps share one backend, with role-based access for staff, gallery owners and collectors.",
+    tech: ["Next.js", "TypeScript", "Tailwind", "Privy", "React Native"],
+    orientation: "landscape",
+    images: [
+      "/projects/mypocketgallery1.jpg",
+      "/projects/mypocketgallery2.jpg",
+      "/projects/mypocketgallery3.jpg",
+      "/projects/mypocketgallery4.jpg",
+      "/projects/mypocketgallery5.jpg",
+      "/projects/mypocketgallery6.jpg",
+    ],
+    live: "https://mypocketgallery.com",
+  },
+  {
+    slug: "ushsus",
+    group: "saas",
+    title: "Ushsus",
+    category: "AI / Church Management",
+    description:
+      "AI-powered church attendance and usher management platform with live seating maps and AI head counts.",
+    about:
+      "Ushsus is an AI-powered attendance and usher management platform for churches. Admins get a dashboard of attendance, first-time guests, new converts and occupancy, plus AI insights that flag trends such as rising visitor numbers or falling midweek attendance. The interactive seating map shows occupancy across the main auditorium, balcony and overflow hall. The Head Count tool lets ushers upload or capture a photo of a section, and on-device object detection (TensorFlow.js with COCO-SSD) counts the people in it. The platform also covers services, calendar, departments, usher management, analytics and exportable reports.",
+    tech: ["Next.js", "TypeScript", "TensorFlow.js", "Framer Motion"],
+    orientation: "landscape",
+    images: [
+      "/projects/ushsus1.jpg",
+      "/projects/ushsus2.jpg",
+      "/projects/ushsus3.jpg",
+      "/projects/ushsus4.jpg",
+      "/projects/ushsus5.jpg",
+      "/projects/ushsus6.jpg",
+    ],
+    live: "https://usechurch.vercel.app",
+  },
+  {
+    slug: "base-terminal",
+    group: "web3",
+    title: "Base Terminal",
+    category: "Web3 / DeFi",
+    description:
+      "Real-time terminal for discovering, tracking and trading tokens on the Base blockchain.",
+    about:
+      "Base Terminal is a token discovery and analytics terminal for the Base network. It streams live market data into a dense, trader-focused interface: newly launched tokens, trending tokens across 5m/1h/6h/24h windows, top volume, and launchpad analytics for platforms such as Uniswap, Aerodrome, Zora, Bankr and Clanker. Users can search by name, symbol or contract address, open detailed token pages, keep a watchlist and follow the latest liquidity activity, with wallet connection for trading.",
+    tech: ["Next.js", "TypeScript", "Tailwind", "Zustand"],
+    orientation: "landscape",
+    images: [
+      "/projects/baseterminal1.jpg",
+      "/projects/baseterminal2.jpg",
+      "/projects/baseterminal3.jpg",
+      "/projects/baseterminal4.jpg",
+    ],
+    live: "https://baseterminal.vercel.app",
+  },
+  {
     slug: "cre8corelabs",
+    group: "web3",
     title: "CR8CORELABS",
     category: "Web3 / Onchain",
     description:
@@ -95,6 +274,7 @@ export const projects: Project[] = [
   },
   {
     slug: "wbh-web",
+    group: "ai",
     title: "WBH Web",
     category: "AI / Skincare",
     description:
@@ -109,9 +289,11 @@ export const projects: Project[] = [
       "/projects/wbhweb3.png",
       "/projects/wbhweb4.png",
     ],
+    live: "https://www.wbhskin.com",
   },
   {
     slug: "wbh-mobile",
+    group: "ai",
     title: "WBH Mobile",
     category: "AI / Skincare",
     description:
@@ -127,7 +309,95 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "irontrack",
+    group: "ai",
+    title: "IronTrack",
+    category: "AI / Fitness",
+    description:
+      "AI workout tracker that uses your camera to count reps, check form and coach you in real time.",
+    about:
+      "IronTrack is an AI-powered strength and cardio tracker. Using real-time pose detection with MediaPipe Pose, it watches your workout through the camera, counts your reps, scores your form quality and tracks time under tension. An AI coach handles intake, programming and voice feedback. Users can follow programs, log workouts, review replays and track progress over time, and an admin portal manages exercises, events, users and analytics. The web app is built with Next.js and Supabase, and a companion Expo (React Native) mobile app shares the same backend.",
+    tech: ["Next.js", "TypeScript", "Supabase", "MediaPipe", "React Native"],
+    orientation: "landscape",
+    images: [
+      "/projects/irontrack1.jpg",
+      "/projects/irontrack2.jpg",
+      "/projects/irontrack3.jpg",
+    ],
+  },
+  {
+    slug: "tayylo",
+    group: "saas",
+    title: "Tayylo",
+    category: "SaaS / Fashion",
+    description:
+      "The modern tailor's notebook: find any client in seconds and keep every measurement as a dated version.",
+    about:
+      "Tayylo is a mobile-first app for tailors and fashion designers that replaces the paper measurement book. Tailors can find any client in two seconds, record measurements with a keypad built for tailoring fractions, and keep every measurement as a dated version, so nothing is overwritten and they can see how a client's fit changes from visit to visit. It also handles orders, fitting notes and a daily overview, and installs as a PWA. Built with Next.js and Supabase, with Google and Apple sign-in.",
+    tech: ["Next.js", "TypeScript", "Supabase", "Zustand"],
+    orientation: "portrait",
+    images: [
+      "/projects/tayylo1.jpg",
+      "/projects/tayylo2.jpg",
+      "/projects/tayylo3.jpg",
+      "/projects/tayylo4.jpg",
+      "/projects/tayylo5.jpg",
+    ],
+  },
+  {
+    slug: "nimcapsule",
+    group: "web3",
+    title: "NimCapsule",
+    category: "Web3 / Blockchain",
+    description:
+      "Digital time capsules with messages, photos and NIM crypto gifts, locked on-chain until the unlock date.",
+    about:
+      "NimCapsule lets people seal messages, photos and NIM cryptocurrency gifts inside a digital time capsule that opens on a future date, for birthdays, anniversaries, graduations or just because. Unlike other time-capsule apps, the lock is enforced on-chain rather than by a database flag: each gift uses a Nimiq Hash Time-Locked Contract (HTLC) on the Albatross blockchain, so nobody, not even the NimCapsule team, can open a capsule early. Users sign in with their Nimiq wallet or Google, walk through a guided four-step creation flow, and recipients claim the gift with a claim code once it unlocks.",
+    tech: ["Next.js", "Supabase", "Nimiq", "Tailwind"],
+    orientation: "landscape",
+    images: [
+      "/projects/nimcapsule1.jpg",
+      "/projects/nimcapsule2.jpg",
+      "/projects/nimcapsule3.jpg",
+    ],
+  },
+  {
+    slug: "storrverse",
+    group: "ecommerce",
+    title: "Storrverse",
+    category: "E-Commerce SaaS",
+    description:
+      "Multi-tenant e-commerce platform for African merchants: vendor dashboard plus themeable storefronts.",
+    about:
+      "Storrverse is a multi-vendor e-commerce platform built to help African businesses build, sell and grow online. Merchants manage products, inventory, orders, fulfilment, customers, analytics, marketing, billing and payments from the vendor dashboard, which has two-factor authentication and team accounts. A single storefront deployment serves every store: it resolves the store from the request's subdomain and renders it with the theme the merchant published from the dashboard's Themes & Appearance editor.",
+    tech: ["Next.js", "TypeScript", "Tailwind", "Zustand"],
+    orientation: "landscape",
+    images: [
+      "/projects/storrverse1.jpg",
+      "/projects/storrverse2.jpg",
+      "/projects/storrverse3.jpg",
+    ],
+  },
+  {
+    slug: "purger",
+    group: "ai",
+    title: "Purger",
+    category: "Desktop / AI Audio",
+    description:
+      "Offline desktop app that removes noise from audio with on-device AI. Drop in a file, hear it clean, export.",
+    about:
+      "Purger is a standalone desktop app for AI-powered audio noise removal, built for podcasters, musicians, field recorders and video producers. It runs entirely on-device, with no cloud uploads and no subscription: the user drags in a noisy audio or video file, the DeepFilterNet model (running locally through ONNX Runtime) cleans it, they compare before and after, then export. It supports single files and whole-folder batch processing, with saved presets. Built with Electron, React and Vite for Windows, macOS and Linux.",
+    tech: ["Electron", "React", "ONNX Runtime", "Tailwind"],
+    orientation: "landscape",
+    images: [
+      "/projects/purger1.jpg",
+      "/projects/purger2.jpg",
+      "/projects/purger3.jpg",
+    ],
+  },
+  {
     slug: "cybernovr",
+    group: "websites",
     title: "Cybernovr",
     category: "Cybersecurity",
     description:
@@ -146,6 +416,7 @@ export const projects: Project[] = [
 
   {
     slug: "royal-fits",
+    group: "ecommerce",
     title: "Royal Fits",
     category: "E-Commerce",
     description:
@@ -163,6 +434,7 @@ export const projects: Project[] = [
   },
   {
     slug: "syndeo-collaboration",
+    group: "websites",
     title: "Syndeo Collaboration",
     category: "Productivity",
     description:
@@ -180,6 +452,7 @@ export const projects: Project[] = [
   },
   {
     slug: "play2learn",
+    group: "education",
     title: "Play2Learn",
     category: "EdTech",
     description:
@@ -201,14 +474,24 @@ export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
 }
 
+export function getProjectsByGroup(id: ProjectGroupId): Project[] {
+  return projects.filter((p) => p.group === id);
+}
+
+// All projects in section order, so Prev/Next on a project page walks through related work.
+export const orderedProjects: Project[] = projectGroups.flatMap((g) =>
+  getProjectsByGroup(g.id)
+);
+
 export function getAdjacentProjects(slug: string): {
   prev: Project | null;
   next: Project | null;
 } {
-  const index = projects.findIndex((p) => p.slug === slug);
+  const list = orderedProjects;
+  const index = list.findIndex((p) => p.slug === slug);
   if (index === -1) return { prev: null, next: null };
   return {
-    prev: index > 0 ? projects[index - 1] : projects[projects.length - 1],
-    next: index < projects.length - 1 ? projects[index + 1] : projects[0],
+    prev: index > 0 ? list[index - 1] : list[list.length - 1],
+    next: index < list.length - 1 ? list[index + 1] : list[0],
   };
 }
