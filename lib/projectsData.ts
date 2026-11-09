@@ -68,6 +68,8 @@ export interface Project {
   playStore?: string;
   appStore?: string;
   github?: string;
+  /** Not launched yet: the card is greyed out and opens a "coming soon" modal instead of the project page. */
+  status?: "coming-soon";
 }
 
 export const projects: Project[] = [
@@ -200,8 +202,8 @@ export const projects: Project[] = [
     description:
       "Art collecting platform for Neftwerk: collector app, gallery owner portal and staff CMS on one backend.",
     about:
-      "My Pocket Gallery is Neftwerk's platform for discovering, collecting and showcasing art. I worked across the ecosystem: the collector web app (forum, discover, gallery, wallet and profile), the React Native mobile app, the staff CMS (Neftwerk Control Plane), and the Gallery Portal, where gallery owners sign in with a passwordless email code via Privy. In the portal, owners can reply to collector enquiries, manage artists, collections and artworks, print QR labels for physical pieces, edit their public gallery profile, and submit KYB documents for verification. All three apps share one backend, with role-based access for staff, gallery owners and collectors.",
-    tech: ["Next.js", "TypeScript", "Tailwind", "Privy", "React Native"],
+      "My Pocket Gallery is Neftwerk's platform for discovering, collecting and showcasing art. I worked across the web side of the ecosystem: the collector web app (forum, discover, gallery, wallet and profile), the staff CMS (Neftwerk Control Plane), and the Gallery Portal, where gallery owners sign in with a passwordless email code via Privy. In the portal, owners can reply to collector enquiries, manage artists, collections and artworks, print QR labels for physical pieces, edit their public gallery profile, and submit KYB documents for verification. These apps and the My Pocket Gallery iOS app (listed separately) share one backend, with role-based access for staff, gallery owners and collectors.",
+    tech: ["Next.js", "TypeScript", "Tailwind", "Privy"],
     orientation: "landscape",
     images: [
       "/projects/mypocketgallery1.jpg",
@@ -214,7 +216,29 @@ export const projects: Project[] = [
     live: "https://mypocketgallery.com",
   },
   {
+    slug: "my-pocket-gallery-app",
+    group: "web3",
+    title: "My Pocket Gallery iOS App",
+    category: "Mobile / Art & Web3",
+    description:
+      "Your gallery, in your pocket: discover original art, browse curated galleries and collect with on-chain ownership.",
+    about:
+      "The My Pocket Gallery mobile app, live on the Apple App Store, brings Neftwerk's art platform to the phone. Collectors discover original paintings, drawings and mixed media from independent artists, step inside curated galleries from around the world, and open any artwork for full detail on the artist, gallery and collection. A built-in wallet makes buying art simple, and each purchase can be registered on-chain for a verifiable record of ownership. Collectors can message galleries directly, get notified about purchases and new posts in one inbox, join the community forum, and scan an artwork's QR label to jump straight to it. Built with React Native and Expo Router, with Privy for sign-in and wallets, viem for on-chain actions, and English and Spanish translations.",
+    tech: ["React Native", "Expo", "TypeScript", "Privy", "viem"],
+    orientation: "portrait",
+    images: [
+      "/projects/mypocketgalleryapp1.jpg",
+      "/projects/mypocketgalleryapp2.jpg",
+      "/projects/mypocketgalleryapp3.jpg",
+      "/projects/mypocketgalleryapp4.jpg",
+      "/projects/mypocketgalleryapp5.jpg",
+      "/projects/mypocketgalleryapp6.jpg",
+    ],
+    appStore: "https://apps.apple.com/us/app/my-pocket-gallery/id6789494437",
+  },
+  {
     slug: "ushsus",
+    status: "coming-soon",
     group: "saas",
     title: "Ushsus",
     category: "AI / Church Management",
@@ -327,6 +351,7 @@ export const projects: Project[] = [
   },
   {
     slug: "tayylo",
+    status: "coming-soon",
     group: "saas",
     title: "Tayylo",
     category: "SaaS / Fashion",
@@ -380,6 +405,7 @@ export const projects: Project[] = [
   },
   {
     slug: "purger",
+    status: "coming-soon",
     group: "ai",
     title: "Purger",
     category: "Desktop / AI Audio",
@@ -483,11 +509,16 @@ export const orderedProjects: Project[] = projectGroups.flatMap((g) =>
   getProjectsByGroup(g.id)
 );
 
+export function isComingSoon(project: Project): boolean {
+  return project.status === "coming-soon";
+}
+
 export function getAdjacentProjects(slug: string): {
   prev: Project | null;
   next: Project | null;
 } {
-  const list = orderedProjects;
+  // Unreleased projects have no page, so Prev/Next skips them.
+  const list = orderedProjects.filter((p) => !isComingSoon(p));
   const index = list.findIndex((p) => p.slug === slug);
   if (index === -1) return { prev: null, next: null };
   return {

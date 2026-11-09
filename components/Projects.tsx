@@ -4,10 +4,12 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import Folder from "./Folder";
 import Link from "next/link";
+import ComingSoonModal from "./ComingSoonModal";
 import {
   projects,
   projectGroups,
   getProjectsByGroup,
+  isComingSoon,
   type Project,
   type ProjectGroupId,
 } from "@/lib/projectsData";
@@ -22,7 +24,8 @@ export default function Projects() {
   const [filter, setFilter] = useState<Filter>("all");
   const [opened, setOpened] = useState<Set<string>>(() => new Set());
   const openedRef = useRef<Set<string>>(new Set());
-  const cardRefs = useRef(new Map<string, HTMLAnchorElement>());
+  const cardRefs = useRef(new Map<string, HTMLElement>());
+  const [soonProject, setSoonProject] = useState<Project | null>(null);
   const queueRef = useRef<string[]>([]);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -198,41 +201,45 @@ export default function Projects() {
     })),
   ];
 
-  // The animated wrapper is a plain div: the Link has a CSS transform transition
-  // for its hover lift, which would fight GSAP if GSAP animated it directly.
-  const renderCard = (project: Project) => (
-    <div key={project.slug} data-animate="card">
-      <Link
-        href={`/projects/${project.slug}`}
-        ref={(el) => {
-          if (el) cardRefs.current.set(project.slug, el);
-          else cardRefs.current.delete(project.slug);
-        }}
-        data-slug={project.slug}
-        className="group overflow-hidden rounded-3xl bg-white/[0.04] backdrop-blur-xl transition duration-500 hover:-translate-y-3 hover:border-[#f5a764]/60 hover:shadow-[0_0_45px_rgba(245,167,100,.15)] block h-full"
-      >
-        <div className="flex justify-center pt-30">
-          <Folder
-            size={1.45}
-            color="#f5c895"
-            items={project.images}
-            className="custom-folder"
-            open={opened.has(project.slug)}
-          />
-        </div>
+  const folder = (project: Project) => (
+    <div className="flex justify-center pt-30">
+      <Folder
+        size={1.45}
+        color="#f5c895"
+        items={project.images}
+        className="custom-folder"
+        open={opened.has(project.slug)}
+      />
+    </div>
+  );
 
-        <div className="px-7 py-6">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="rounded-full bg-[#f5a764]/20 px-3 py-1 text-xs font-semibold text-[#f5a764] uppercase tracking-wider">
-              {project.category}
-            </span>
-          </div>
+  const details = (project: Project, soon: boolean) => (
+    <div className="px-7 py-6">
+      <div className="flex items-center gap-3 mb-2">
+        <span
+          className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider ${
+            soon ? "bg-white/10 text-gray-400" : "bg-[#f5a764]/20 text-[#f5a764]"
+          }`}
+        >
+          {project.category}
+        </span>
+      </div>
 
-          <h4 className="font-orbitron text-2xl text-white">{project.title}</h4>
+      <h4 className={`font-orbitron text-2xl ${soon ? "text-gray-300" : "text-white"}`}>
+        {project.title}
+      </h4>
 
-          <p className="mt-4 leading-7 text-gray-400">{project.description}</p>
+      <p className={`mt-4 leading-7 ${soon ? "text-gray-500" : "text-gray-400"}`}>
+        {project.description}
+      </p>
 
-          <div className="flex flex-wrap gap-3 py-4">
+      <div className="flex flex-wrap gap-3 py-4">
+        {soon ? (
+          <span className="flex-1 rounded-full border border-dashed border-white/20 py-3 text-center font-bold text-gray-400">
+            In the pipeline
+          </span>
+        ) : (
+          <>
             {project.live && (
               <span className="flex-1 rounded-full px-8 bg-[#f5a764] py-3 text-center font-bold text-white transition hover:scale-105">
                 Live Demo
@@ -248,9 +255,62 @@ export default function Projects() {
                 App Store
               </span>
             )}
+          </>
+        )}
+      </div>
+    </div>
+  );
+
+  const setCardRef = (slug: string) => (el: HTMLElement | null) => {
+    if (el) cardRefs.current.set(slug, el);
+    else cardRefs.current.delete(slug);
+  };
+
+  // The animated wrapper is a plain div: the card has a CSS transform transition
+  // for its hover lift, which would fight GSAP if GSAP animated it directly.
+  const renderCard = (project: Project) => (
+    <div key={project.slug} data-animate="card">
+      {isComingSoon(project) ? (
+        // Unreleased: greyed out, opens the "coming soon" modal instead of a page.
+        <div
+          ref={setCardRef(project.slug)}
+          data-slug={project.slug}
+          role="button"
+          tabIndex={0}
+          aria-haspopup="dialog"
+          aria-label={`${project.title}: coming soon`}
+          onClick={() => setSoonProject(project)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              setSoonProject(project);
+            }
+          }}
+          className="group relative block h-full cursor-pointer overflow-hidden rounded-3xl border border-dashed border-white/10 bg-white/[0.02] backdrop-blur-xl transition duration-500 hover:-translate-y-1 hover:border-white/25 focus-visible:outline-2 focus-visible:outline-[#f5a764]"
+        >
+          <span className="absolute right-5 top-5 z-10 inline-flex items-center gap-2 rounded-full border border-[#f5a764]/40 bg-black/70 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#f5a764] backdrop-blur">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#f5a764] opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#f5a764]" />
+            </span>
+            Coming soon
+          </span>
+          <div className="grayscale opacity-50 transition duration-500 group-hover:opacity-70">
+            {folder(project)}
+            {details(project, true)}
           </div>
         </div>
-      </Link>
+      ) : (
+        <Link
+          href={`/projects/${project.slug}`}
+          ref={setCardRef(project.slug)}
+          data-slug={project.slug}
+          className="group overflow-hidden rounded-3xl bg-white/[0.04] backdrop-blur-xl transition duration-500 hover:-translate-y-3 hover:border-[#f5a764]/60 hover:shadow-[0_0_45px_rgba(245,167,100,.15)] block h-full"
+        >
+          {folder(project)}
+          {details(project, false)}
+        </Link>
+      )}
     </div>
   );
 
@@ -366,6 +426,10 @@ export default function Projects() {
           );
         })}
       </div>
+
+      {soonProject && (
+        <ComingSoonModal project={soonProject} onClose={() => setSoonProject(null)} />
+      )}
     </section>
   );
 }
