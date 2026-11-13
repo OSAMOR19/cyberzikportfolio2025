@@ -9,6 +9,7 @@ import HeroStats, { pad2 } from "./hero/HeroStats";
 import JourneyStart from "./hero/JourneyStart";
 import { jumpTo } from "./hero/heroNav";
 import "./hero/hero.css";
+import Link from "next/link";
 
 const MOTION = "(prefers-reduced-motion: no-preference)";
 const LABEL =
@@ -214,6 +215,14 @@ export default function Hero() {
               decentralized solutions. My journey in tech began over 5 years ago,
               and I&apos;ve been pushing the boundaries of what&apos;s possible ever since.
             </p>
+            <Link
+              data-hero-reveal
+              href="/about"
+              className="mt-5 inline-flex items-center gap-2 rounded-full font-mono text-[11px] uppercase tracking-[0.22em] text-[#f5a764] transition hover:text-[#f5c895] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f5a764]"
+            >
+              From civil engineer to software engineer: read my story
+              <span aria-hidden="true">→</span>
+            </Link>
           </div>
 
           <div className="order-first lg:order-none">

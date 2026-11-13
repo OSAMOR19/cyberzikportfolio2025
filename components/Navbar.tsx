@@ -508,15 +508,19 @@ function Navbar() {
                 );
               })}
 
-              {/* Off the route: a separate page. */}
-              <li className="relative mt-4">
+              {/* Off the route: separate pages. */}
+              {[
+                { href: "/about", label: "About" },
+                { href: "/pricing", label: "Pricing" },
+              ].map((page, pi) => (
+              <li key={page.href} className={`relative ${pi === 0 ? "mt-4" : ""}`}>
                 <Link
-                  href="/pricing"
+                  href={page.href}
                   onClick={() => {
-                    if (pathname === "/pricing") closeMenu();
+                    if (pathname === page.href) closeMenu();
                     else unlockScroll();
                   }}
-                  aria-current={pathname === "/pricing" ? "page" : undefined}
+                  aria-current={pathname === page.href ? "page" : undefined}
                   className={`group relative flex items-center gap-3 rounded-2xl py-5 pr-2 sm:gap-5 md:py-7 ${FOCUS_RING}`}
                 >
                   <span aria-hidden="true" className="grid h-6 w-6 shrink-0 place-items-center">
@@ -526,14 +530,14 @@ function Navbar() {
                     />
                   </span>
                   <span data-menu-num className="w-7 shrink-0 font-mono text-xs text-[#f5a764] md:w-10 md:text-base">
-                    {pad2(STOPS.length + 1)}.
+                    {pad2(STOPS.length + 1 + pi)}.
                   </span>
                   <span className="block overflow-hidden py-1 transition-transform duration-300 ease-out group-hover:translate-x-2">
                     <span
                       data-menu-text
                       className="block font-orbitron text-3xl leading-none font-bold text-gray-100/90 transition-colors duration-300 group-hover:text-[#f5a764] sm:text-4xl md:text-6xl"
                     >
-                      Pricing
+                      {page.label}
                     </span>
                   </span>
                   <span className="ml-auto flex shrink-0 items-center gap-4">
@@ -547,6 +551,7 @@ function Navbar() {
                   </span>
                 </Link>
               </li>
+              ))}
             </ol>
 
             {/* Footer row */}

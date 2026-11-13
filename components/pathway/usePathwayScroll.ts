@@ -75,6 +75,9 @@ export function usePathwayScroll({ rootRef, listRef, filter, onPosition, onOpen 
       {
         desktop: "(min-width: 1024px)",
         reduce: "(prefers-reduced-motion: reduce)",
+        // gsap.matchMedia only runs this setup when at least one condition matches, so
+        // without a catch-all the pathway never initialises on phones/tablets.
+        any: "all",
       },
       (ctx) => {
         const { desktop, reduce } = ctx.conditions as { desktop: boolean; reduce: boolean };

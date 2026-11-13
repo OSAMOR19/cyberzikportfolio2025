@@ -7,6 +7,7 @@ import { FaTwitter, FaLinkedin, FaGithub } from "react-icons/fa";
 import { ArrowRight, ArrowUp, ArrowUpRight } from "lucide-react";
 import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/gsap";
 import { scrollToTarget, getScrollVelocity } from "@/lib/scroll";
+import Link from "next/link";
 
 const FOCUS_RING =
   "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f5a764]";
@@ -241,6 +242,15 @@ const Footer = () => {
                   </a>
                 </li>
               ))}
+              <li>
+                <Link href="/about" className={linkClass}>
+                  <span
+                    aria-hidden="true"
+                    className="h-2 w-2 shrink-0 rounded-full border border-dashed border-[#f5a764]/70 bg-black transition group-hover:border-solid group-hover:bg-[#f5a764] group-hover:shadow-[0_0_10px_rgba(245,167,100,.8)]"
+                  />
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">About me</span>
+                </Link>
+              </li>
             </ul>
           </nav>
 

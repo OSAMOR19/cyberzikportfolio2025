@@ -439,7 +439,7 @@ export default function AboutPage() {
           </nav>
         </header>
 
-        <main>
+        <main className="overflow-x-clip">
           {/* Intro */}
           <section className="mx-auto grid min-h-[100svh] max-w-6xl items-center gap-12 px-6 pb-16 pt-32 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:pt-28">
             <div>
@@ -558,7 +558,7 @@ export default function AboutPage() {
                     </span>
 
                     <div className={`relative grid items-start gap-10 ${c.media ? "lg:grid-cols-2 lg:gap-16" : ""}`}>
-                      <div data-reveal className={c.media ? "" : "max-w-3xl"}>
+                      <div data-reveal className={`min-w-0 ${c.media ? "" : "max-w-3xl"}`}>
                         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-[#f5a764]">
                           Chapter {n} · {c.kicker}
                         </p>
@@ -577,7 +577,7 @@ export default function AboutPage() {
                         )}
                       </div>
                       {c.media && (
-                        <div data-reveal>
+                        <div data-reveal className="min-w-0">
                           <ChapterMedia media={c.media} />
                         </div>
                       )}
