@@ -4,7 +4,7 @@ import { memo } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { FaApple, FaGooglePlay } from "react-icons/fa";
-import Folder from "../Folder";
+import ProjectPreview from "./ProjectPreview";
 import type { Project } from "@/lib/projectsData";
 import { chipPlan, pad2, type PathItem } from "./model";
 
@@ -14,8 +14,6 @@ interface Props {
   onSoon: (project: Project) => void;
   onNavigate: (slug: string) => void;
 }
-
-const FOLDER_SIZES = "(min-width: 1024px) 150px, 124px";
 
 function Chips({ tech, soon }: { tech: string[]; soon: boolean }) {
   const plan = chipPlan(tech);
@@ -85,27 +83,14 @@ function PathwayCardImpl({ item, open, onSoon, onNavigate }: Props) {
     <div className="pw-folder relative h-[190px] shrink-0 lg:h-[250px]">
       <span
         aria-hidden
-        className={`pw-ghost pointer-events-none absolute top-2 select-none font-orbitron text-[88px] font-bold leading-none lg:top-3 lg:text-[120px] ${
+        className={`pw-ghost pointer-events-none absolute top-2 select-none font-sans text-[88px] font-black tracking-tighter leading-none lg:top-3 lg:text-[120px] ${
           side === "right" ? "right-5 lg:right-6" : "right-5 lg:left-6 lg:right-auto"
         }`}
       >
         {num}
       </span>
-      <div
-        className={`absolute inset-x-0 bottom-[46px] flex justify-center lg:bottom-[62px] ${
-          soon ? "opacity-70 grayscale" : ""
-        }`}
-      >
-        <div className="scale-[1.2] lg:scale-[1.45]">
-          <Folder
-            size={1}
-            color="#f5c895"
-            items={project.images}
-            open={open}
-            interactive={false}
-            imageSizes={FOLDER_SIZES}
-          />
-        </div>
+      <div className={`absolute inset-x-4 bottom-0 top-4 lg:inset-x-6 lg:top-5 ${soon ? "opacity-70 grayscale" : ""}`}>
+        <ProjectPreview project={project} active={open} soon={soon} />
       </div>
     </div>
   );

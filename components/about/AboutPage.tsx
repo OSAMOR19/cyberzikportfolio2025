@@ -169,8 +169,8 @@ function ChapterMedia({ media }: { media: Media }) {
     case "work":
       return (
         <Photo
-          src="/about/isaac-at-work.jpg"
-          alt="Isaac's hands on his laptop keyboard at his desk"
+          src="/about/isaac-at-desk.jpg"
+          alt="Isaac Osamor smiling at his desk, one hand on his laptop"
           caption="Same engineer, new tools."
           ratio="aspect-[16/15]"
         />
@@ -178,7 +178,7 @@ function ChapterMedia({ media }: { media: Media }) {
     case "world":
       return (
         <div className="space-y-6">
-          <Photo src="/about/isaac-smile.jpg" alt="Isaac Osamor smiling at his desk next to his laptop" ratio="aspect-[4/4.2]" />
+          <Photo src="/about/isaac-closeup.jpg" alt="Isaac Osamor smiling at his desk" ratio="aspect-[8/7]" />
           <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] py-3 [mask-image:linear-gradient(90deg,transparent,#000_10%,#000_90%,transparent)]">
             {/* Moving strip of shipped projects (static, wrapped list when reduced motion is on) */}
             <ul className="hidden w-max gap-3 px-3 motion-safe:flex motion-safe:animate-marquee" aria-hidden>
