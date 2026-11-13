@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+'use client';
+
+import { useEffect, useMemo, useRef } from 'react';
 import {
   Color,
   Mesh,
@@ -11,7 +13,38 @@ import {
   WebGLRenderer
 } from 'three';
 
+import { getLenis, getScrollVelocity } from '@/lib/scroll';
 import './PixelSnow.css';
+
+// ---------------------------------------------------------------------------------------------
+// Tuning
+// ---------------------------------------------------------------------------------------------
+
+// Scroll speed (px/s) that produces the full warp. Measured on the home page with Lenis:
+// gentle wheel scrolling ~400-800 px/s, normal scrolling ~1,000-1,700 px/s, a fast flick
+// ~5,000-6,500 px/s. The curve below keeps normal scrolling a gentle speed-up (measured boost
+// ~0.2-0.5, i.e. 1.2-1.5x) and lets a flick reach a clear warp (boost ~3, 4x; 5x at most).
+const WARP_FULL_PX_PER_SEC = 5000;
+const WARP_CURVE = 1.4;
+const WARP_MAX_BOOST = 4;
+const WARP_RISE = 0.16; // per 60 Hz frame, towards a higher target
+const WARP_FALL = 0.08; // per 60 Hz frame, back towards rest
+// How much flakes stretch along their direction of travel while warping (0 = never).
+// Length factor = 1 + boost * WARP_STRETCH: a flick (boost ~3) gives ~2x-long streaks.
+const WARP_STRETCH = 0.4;
+
+// Pixel-ratio budget. The shader ray-marches up to 128 cells per pixel, so pixels are the cost.
+const DPR_CAP = 1.5;
+const DPR_CAP_NARROW = 1.25; // screens narrower than 768 CSS px
+// The ratio the look was designed at. The shader works in device pixels, so on a 2x screen the
+// field of view and flake size depend on it; uPixelScale keeps that look while we render at a
+// lower ratio (each rendered pixel samples the matching point of the original 2x grid).
+const LOOK_DPR_MAX = 2;
+
+// Reduced motion shows one still frame. A flake right in front of the camera can be hundreds of
+// px wide; in motion it flies past in a blink, frozen it looks like a glitch. The still frame
+// skips flakes bigger than this half-size (in shader pixels), about the largest seen drifting.
+const STILL_MAX_FLAKE_PX = 7;
 
 const vertexShader = `
 void main() {
@@ -36,6 +69,9 @@ uniform float uGamma;
 uniform float uDensity;
 uniform float uVariant;
 uniform float uDirection;
+uniform float uPixelScale;
+uniform float uStretch;
+uniform float uMaxFlakePx; // 0 = no limit
 
 // Precomputed constants
 #define PI 3.14159265
@@ -82,8 +118,9 @@ void main() {
   float invPixelRes = 1.0 / uPixelResolution;
   float pixelSize = max(1.0, floor(0.5 + uResolution.x * invPixelRes));
   float invPixelSize = 1.0 / pixelSize;
-  
-  vec2 fragCoord = floor(gl_FragCoord.xy * invPixelSize);
+
+  // uPixelScale maps the (capped) render grid back onto the original device-pixel grid.
+  vec2 fragCoord = floor(gl_FragCoord.xy * uPixelScale * invPixelSize);
   vec2 res = uResolution * invPixelSize;
   float invResX = 1.0 / res.x;
 
@@ -96,6 +133,11 @@ void main() {
   float windY = sin(uDirection) * 0.4;
   vec3 camPos = (windX * camI + windY * camJ + 0.1 * camK) * timeSpeed;
   vec3 pos = camPos;
+
+  // Warp: squash the flake test space along the direction of travel so flakes read as streaks.
+  // stretchK is exactly 0 at rest, which skips this entirely.
+  vec2 warpDir = vec2(cos(uDirection), sin(uDirection));
+  float stretchK = uStretch / (1.0 + uStretch);
 
   // Precompute ray reciprocal for strides
   vec3 absRay = max(abs(ray), vec3(0.001));
@@ -114,14 +156,14 @@ void main() {
   float t = 0.0;
   for (int i = 0; i < 128; i++) {
     if (t >= uFarPlane) break;
-    
+
     vec3 fpos = floor(pos);
     uint cellCoord = coord3(fpos);
     float cellHash = hash3(cellCoord).x;
 
     if (cellHash < uDensity) {
       vec3 h = hash3(cellCoord);
-      
+
       // Optimized flake position calculation
       vec3 sinArg1 = fpos.yzx * 0.073;
       vec3 sinArg2 = fpos.zxy * 0.27;
@@ -129,16 +171,18 @@ void main() {
       flakePos = flakePos * 0.8 + 0.1 + fpos;
 
       float toIntersection = dot(flakePos - pos, camK) * invRayDotCamK;
-      
+
       if (toIntersection > 0.0) {
         vec3 testPos = pos + ray * toIntersection - flakePos;
-        float testX = dot(testPos, camI);
-        float testY = dot(testPos, camJ);
-        vec2 testUV = abs(vec2(testX, testY));
-        
+        vec2 testP = vec2(dot(testPos, camI), dot(testPos, camJ));
+        if (stretchK > 0.0) {
+          testP -= warpDir * (dot(testP, warpDir) * stretchK);
+        }
+        vec2 testUV = abs(testP);
+
         float depth = dot(flakePos - camPos, camK);
         float flakeSize = max(uFlakeSize, uMinFlakeSize * depth * halfInvResX);
-        
+
         // Avoid branching with step functions where possible
         float dist;
         if (uVariant < 0.5) {
@@ -147,10 +191,10 @@ void main() {
           dist = length(testUV);
         } else {
           float invFlakeSize = 1.0 / flakeSize;
-          dist = snowflakeDist(vec2(testX, testY) * invFlakeSize) * flakeSize;
+          dist = snowflakeDist(testP * invFlakeSize) * flakeSize;
         }
 
-        if (dist < flakeSize) {
+        if (dist < flakeSize && (uMaxFlakePx <= 0.0 || flakeSize * res.x <= uMaxFlakePx * depth)) {
           float flakeSizeRatio = uFlakeSize / flakeSize;
           float intensity = exp2(-(t + toIntersection) * invDepthFade) *
                            min(1.0, flakeSizeRatio * flakeSizeRatio) * uBrightness;
@@ -171,6 +215,13 @@ void main() {
 }
 `;
 
+/** Frame-rate independent version of `x += (target - x) * perFrame` (perFrame tuned at 60 Hz). */
+const easeFactor = (perFrame, dtMs) => 1 - Math.pow(1 - perFrame, dtMs / (1000 / 60));
+
+/**
+ * Fixed WebGL starfield. Drifts on its own clock and "warps" (speeds up, flakes streak) while
+ * the page scrolls fast. Under prefers-reduced-motion it renders a single still frame.
+ */
 export default function PixelSnow({
   color = '#ffffff',
   flakeSize = 0.01,
@@ -188,11 +239,9 @@ export default function PixelSnow({
   style = {}
 }) {
   const containerRef = useRef(null);
-  const animationRef = useRef(0);
-  const isVisibleRef = useRef(true);
-  const rendererRef = useRef(null);
   const materialRef = useRef(null);
-  const resizeTimeoutRef = useRef(null);
+  // Renders one frame when the animation loop isn't running (reduced motion, hidden tab).
+  const renderIfIdleRef = useRef(null);
 
   // Memoize shader variant value
   const variantValue = useMemo(() => {
@@ -205,68 +254,38 @@ export default function PixelSnow({
     return new Vector3(threeColor.r, threeColor.g, threeColor.b);
   }, [color]);
 
-  // Debounced resize handler
-  const handleResize = useCallback(() => {
-    if (resizeTimeoutRef.current) {
-      clearTimeout(resizeTimeoutRef.current);
+  // Main Three.js setup - only runs once. Prop changes are pushed into uniforms below.
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let renderer;
+    try {
+      renderer = new WebGLRenderer({
+        antialias: false,
+        alpha: true,
+        premultipliedAlpha: false,
+        powerPreference: 'high-performance',
+        stencil: false,
+        depth: false
+      });
+    } catch {
+      // No WebGL: keep the plain black background rather than breaking the page.
+      return;
     }
-    resizeTimeoutRef.current = window.setTimeout(() => {
-      const container = containerRef.current;
-      const renderer = rendererRef.current;
-      const material = materialRef.current;
-      if (!container || !renderer || !material) return;
-
-      const w = container.offsetWidth;
-      const h = container.offsetHeight;
-      renderer.setSize(w, h);
-      material.uniforms.uResolution.value.set(w, h);
-    }, 100);
-  }, []);
-
-  // Visibility observer
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isVisibleRef.current = entry.isIntersecting;
-      },
-      { threshold: 0 }
-    );
-
-    observer.observe(container);
-    return () => observer.disconnect();
-  }, []);
-
-  // Main Three.js setup - only runs once
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
 
     const scene = new Scene();
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const renderer = new WebGLRenderer({
-      antialias: false,
-      alpha: true,
-      premultipliedAlpha: false,
-      powerPreference: 'high-performance',
-      stencil: false,
-      depth: false
-    });
-
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(container.offsetWidth, container.offsetHeight);
+    const canvas = renderer.domElement;
     renderer.setClearColor(0x000000, 0);
-    container.appendChild(renderer.domElement);
-    rendererRef.current = renderer;
+    container.appendChild(canvas);
 
     const material = new ShaderMaterial({
       vertexShader,
       fragmentShader,
       uniforms: {
         uTime: { value: 0 },
-        uResolution: { value: new Vector2(container.offsetWidth, container.offsetHeight) },
+        uResolution: { value: new Vector2(1, 1) },
         uFlakeSize: { value: flakeSize },
         uMinFlakeSize: { value: minFlakeSize },
         uPixelResolution: { value: pixelResolution },
@@ -278,47 +297,167 @@ export default function PixelSnow({
         uGamma: { value: gamma },
         uDensity: { value: density },
         uVariant: { value: variantValue },
-        uDirection: { value: (direction * Math.PI) / 180 }
+        uDirection: { value: (direction * Math.PI) / 180 },
+        uPixelScale: { value: 1 },
+        uStretch: { value: 0 },
+        uMaxFlakePx: { value: 0 }
       },
       transparent: true
     });
     materialRef.current = material;
+    const { uniforms } = material;
 
     const geometry = new PlaneGeometry(2, 2);
     scene.add(new Mesh(geometry, material));
 
-    window.addEventListener('resize', handleResize);
+    const render = () => renderer.render(scene, camera);
 
-    const startTime = performance.now();
-    const animate = () => {
-      animationRef.current = requestAnimationFrame(animate);
+    // --- Sizing ------------------------------------------------------------------------------
+    const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    let cssW = 0;
+    let cssH = 0;
 
-      // Only render if visible
-      if (isVisibleRef.current) {
-        material.uniforms.uTime.value = (performance.now() - startTime) * 0.001;
-        renderer.render(scene, camera);
+    const resize = (force = false) => {
+      const w = container.clientWidth;
+      const visibleH = container.clientHeight;
+      if (!w || !visibleH) return;
+      // Touch browsers grow/shrink the viewport as their toolbars hide/show. Keep the tallest
+      // height seen at this width so the field doesn't jump; the container clips the extra.
+      const h = coarsePointer && w === cssW ? Math.max(cssH, visibleH) : visibleH;
+      const lookRatio = Math.min(window.devicePixelRatio || 1, LOOK_DPR_MAX);
+      const ratio = Math.min(lookRatio, window.innerWidth < 768 ? DPR_CAP_NARROW : DPR_CAP);
+      // Display size: CSS fills the container (100% x 100%) unless we're keeping a taller field.
+      canvas.style.height = h === visibleH ? '' : `${h}px`;
+      if (!force && w === cssW && h === cssH && ratio === renderer.getPixelRatio()) return;
+
+      cssW = w;
+      cssH = h;
+      renderer.setPixelRatio(ratio);
+      renderer.setSize(w, h, false);
+      uniforms.uResolution.value.set(w, h);
+      uniforms.uPixelScale.value = lookRatio / ratio;
+      // Resizing clears the drawing buffer; draw now so there's never a blank frame.
+      render();
+    };
+
+    const resizeObserver = new ResizeObserver(() => resize());
+    resizeObserver.observe(container);
+
+    // devicePixelRatio changes (window dragged to another monitor) don't always resize anything.
+    let dprQuery = null;
+    const onDprChange = () => {
+      watchDpr();
+      resize(true);
+    };
+    const watchDpr = () => {
+      dprQuery?.removeEventListener('change', onDprChange);
+      dprQuery = window.matchMedia(`(resolution: ${window.devicePixelRatio || 1}dppx)`);
+      dprQuery.addEventListener('change', onDprChange);
+    };
+    watchDpr();
+
+    // --- Animation loop ----------------------------------------------------------------------
+    const reducedQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let reducedMotion = reducedQuery.matches;
+    let inView = true;
+    let rafId = 0;
+    let running = false;
+    let lastNow = 0;
+    let clock = 0; // accumulated, warp-scaled seconds -> uTime
+    let boost = 0;
+
+    const frame = (now) => {
+      rafId = requestAnimationFrame(frame);
+      // First frame after (re)starting, or a long stall: advance by one normal frame, no jump.
+      const dtMs = lastNow ? Math.min(Math.max(now - lastNow, 0), 100) : 1000 / 60;
+      lastNow = now;
+
+      // Lenis reports px per frame (refresh-rate dependent); the native fallback reports px per
+      // ~16.7 ms. Normalise both to px/s.
+      const v = Math.abs(getScrollVelocity());
+      const pxPerSec = getLenis() ? (v * 1000) / Math.max(dtMs, 4) : v * 60;
+      const target =
+        WARP_MAX_BOOST * Math.pow(Math.min(pxPerSec / WARP_FULL_PX_PER_SEC, 1), WARP_CURVE);
+      boost += (target - boost) * easeFactor(target > boost ? WARP_RISE : WARP_FALL, dtMs);
+      if (boost < 0.002) boost = 0;
+
+      clock += (dtMs / 1000) * (1 + boost);
+      uniforms.uTime.value = clock;
+      uniforms.uStretch.value = boost * WARP_STRETCH;
+      render();
+      window.__snowDebug = { boost, pxPerSec, target, dtMs, clock }; // TEMP
+    };
+
+    const sync = () => {
+      const shouldRun = !reducedMotion && inView && !document.hidden;
+      if (shouldRun && !running) {
+        running = true;
+        lastNow = 0;
+        rafId = requestAnimationFrame(frame);
+      } else if (!shouldRun && running) {
+        running = false;
+        cancelAnimationFrame(rafId);
+        rafId = 0;
       }
     };
-    animate();
+
+    renderIfIdleRef.current = () => {
+      if (!running) render();
+    };
+
+    const applyMotionPreference = () => {
+      uniforms.uMaxFlakePx.value = reducedMotion ? STILL_MAX_FLAKE_PX : 0;
+      if (reducedMotion) {
+        // Settle into a calm still frame.
+        boost = 0;
+        uniforms.uStretch.value = 0;
+      }
+    };
+    applyMotionPreference();
+
+    const onReducedChange = () => {
+      reducedMotion = reducedQuery.matches;
+      applyMotionPreference();
+      sync();
+      if (!running) render();
+    };
+    reducedQuery.addEventListener('change', onReducedChange);
+
+    // Hidden tab: stop the loop entirely and resume from the same clock when it comes back.
+    document.addEventListener('visibilitychange', sync);
+
+    // The canvas is usually position: fixed (always in view), but the component also works
+    // inside normal flow, where it stops rendering while scrolled out of view.
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        inView = entry.isIntersecting;
+        sync();
+      },
+      { threshold: 0 }
+    );
+    intersectionObserver.observe(container);
+
+    resize(true); // first frame (also the reduced-motion still)
+    sync();
 
     return () => {
-      cancelAnimationFrame(animationRef.current);
-      window.removeEventListener('resize', handleResize);
-      if (resizeTimeoutRef.current) {
-        clearTimeout(resizeTimeoutRef.current);
-      }
-      if (container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
-      }
-      renderer.dispose();
-      renderer.forceContextLoss();
+      running = false;
+      cancelAnimationFrame(rafId);
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
+      dprQuery?.removeEventListener('change', onDprChange);
+      reducedQuery.removeEventListener('change', onReducedChange);
+      document.removeEventListener('visibilitychange', sync);
+      renderIfIdleRef.current = null;
+      materialRef.current = null;
+      if (canvas.parentNode === container) container.removeChild(canvas);
       geometry.dispose();
       material.dispose();
-      rendererRef.current = null;
-      materialRef.current = null;
+      renderer.dispose();
+      renderer.forceContextLoss();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [handleResize]); // Only recreate scene when handleResize changes
+  }, []); // Create the scene once; the effect below keeps uniforms in sync with props.
 
   // Update material uniforms when props change
   useEffect(() => {
@@ -337,6 +476,7 @@ export default function PixelSnow({
     material.uniforms.uVariant.value = variantValue;
     material.uniforms.uDirection.value = (direction * Math.PI) / 180;
     material.uniforms.uColor.value.copy(colorVector);
+    renderIfIdleRef.current?.();
   }, [
     flakeSize,
     minFlakeSize,

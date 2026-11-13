@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import "./Folder.css";
 import Image from "next/image";
 
@@ -30,6 +30,9 @@ const darkenColor = (hex, percent) => {
  * @param {(string | null)[]} [props.items]
  * @param {string} [props.className]
  * @param {boolean} [props.open]
+ * @param {boolean} [props.interactive] false: decorative only (no tab stop, hidden from assistive tech),
+ *   for when the folder sits inside a card that is itself the link/button.
+ * @param {string} [props.imageSizes] `sizes` for the paper screenshots; match the rendered size.
  */
 const Folder = ({
   color = "#5227FF",
@@ -37,6 +40,8 @@ const Folder = ({
   items = [],
   className = "",
   open = false,
+  interactive = true,
+  imageSizes = "150px",
 }) => {
   const maxItems = 3;
   const papers = items.slice(0, maxItems);
@@ -48,12 +53,14 @@ const Folder = ({
     Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })),
   );
 
-  // Reset offsets when folder closes
-  useEffect(() => {
+  // Reset offsets when the folder closes (adjusting state during render, not in an effect).
+  const [wasOpen, setWasOpen] = useState(open);
+  if (wasOpen !== open) {
+    setWasOpen(open);
     if (!open) {
       setPaperOffsets(Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })));
     }
-  }, [open]);
+  }
 
   const folderBackColor = darkenColor(color, 0.08);
   const paper1 = darkenColor("#ffffff", 0.1);
@@ -98,9 +105,13 @@ const Folder = ({
       <div
         className={folderClassName}
         style={folderStyle}
-        tabIndex={0}
-        role="img"
-        aria-label={open ? "Folder open" : "Folder closed"}
+        {...(interactive
+          ? {
+              tabIndex: 0,
+              role: "img",
+              "aria-label": open ? "Folder open" : "Folder closed",
+            }
+          : { "aria-hidden": true })}
       >
         <div className="folder__back">
           {papers.map((item, i) => (
@@ -124,7 +135,7 @@ const Folder = ({
                   alt=""
                   fill
                   className="object-cover rounded-md"
-                  sizes="150px"
+                  sizes={imageSizes}
                 />
               )}
             </div>

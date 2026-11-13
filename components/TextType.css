@@ -3,6 +3,39 @@
   white-space: pre-wrap;
 }
 
+/* Full text for assistive tech, read once. */
+.text-type__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Ghost (longest sentence) and live typed text share one grid cell, so the box is always
+   sized by the full sentence and never changes height while typing or deleting. */
+.text-type__stage {
+  display: grid;
+}
+
+.text-type__ghost,
+.text-type__live {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.text-type__ghost {
+  visibility: hidden;
+}
+
+.text-type__ghost .text-type__cursor {
+  visibility: hidden;
+}
+
 .text-type__cursor {
   margin-left: 0.25rem;
   display: inline-block;
@@ -11,4 +44,37 @@
 
 .text-type__cursor--hidden {
   display: none;
+}
+
+/* No JavaScript: show the full sentence instead of an empty typed line. */
+@media (scripting: none) {
+  .text-type__ghost {
+    visibility: visible;
+  }
+  .text-type__live {
+    visibility: hidden;
+  }
+}
+
+/* JavaScript is on but the component never started (script error): after 3s, show the
+   full sentence. The component sets data-typing as soon as it mounts. */
+@media (scripting: enabled) {
+  .text-type:not([data-typing]) .text-type__ghost {
+    animation: text-type-reveal 0s 3s forwards;
+  }
+  .text-type:not([data-typing]) .text-type__live {
+    animation: text-type-conceal 0s 3s forwards;
+  }
+}
+
+@keyframes text-type-reveal {
+  to {
+    visibility: visible;
+  }
+}
+
+@keyframes text-type-conceal {
+  to {
+    visibility: hidden;
+  }
 }

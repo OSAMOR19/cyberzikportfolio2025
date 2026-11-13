@@ -74,6 +74,28 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: "symphome-landing",
+    group: "websites",
+    title: "SymphoMe Landing Page",
+    category: "Landing Page / EdTech",
+    description:
+      "The marketing site for SymphoMe: the intelligence behind modern music education, for learners, tutors and enterprise.",
+    about:
+      "The public website for SymphoMe, an AI-powered music education platform. The landing page speaks to three audiences (learners, tutors and enterprise) and explains how SymphoMe listens through your microphone or MIDI keyboard, understands pitch and timing in real time, and guides you on what to practise next. Learners see the AI practice coach, 20+ quiz types, pitch detection, and lessons and assignments. Tutors see their own public booking page, payments through Stripe and Paystack, digital product sales, built-in video lessons, classes with Spaces and Performance Review. The site also includes pricing with a monthly/yearly toggle, community testimonials, an FAQ, a blog powered by the existing WordPress site, legal pages, and Google Analytics that loads only after cookie consent. Built with Next.js and Tailwind, with GSAP, Motion and Lenis for smooth, scroll-driven animation.",
+    tech: ["Next.js", "TypeScript", "Tailwind", "GSAP", "Lenis"],
+    orientation: "landscape",
+    images: [
+      "/projects/symphomelanding1.jpg",
+      "/projects/symphomelanding2.jpg",
+      "/projects/symphomelanding3.jpg",
+      "/projects/symphomelanding4.jpg",
+      "/projects/symphomelanding5.jpg",
+      "/projects/symphomelanding6.jpg",
+      "/projects/symphomelanding7.jpg",
+    ],
+    live: "https://symphome.com",
+  },
+  {
     slug: "symphome",
     group: "education",
     title: "SymphoMe",

@@ -3,7 +3,8 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
-import gsap from "gsap";
+import { gsap, prefersReducedMotion } from "@/lib/gsap";
+import { NAV_OFFSET, scrollToTarget, startScroll, stopScroll } from "@/lib/scroll";
 import type { Project } from "@/lib/projectsData";
 
 interface Props {
@@ -11,14 +12,14 @@ interface Props {
   onClose: () => void;
 }
 
-const reducedMotion = () =>
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const reducedMotion = prefersReducedMotion;
 
 export default function ComingSoonModal({ project, onClose }: Props) {
   const backdropRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const closingRef = useRef(false);
+  const askRef = useRef(false);
 
   // Animate out, then tell the parent to unmount.
   const close = () => {
@@ -58,6 +59,8 @@ export default function ComingSoonModal({ project, onClose }: Props) {
   useEffect(() => {
     const previouslyFocused = document.activeElement as HTMLElement | null;
     closeBtnRef.current?.focus();
+    // Lenis keeps scrolling under body overflow:hidden, so pause it too.
+    stopScroll();
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
@@ -83,8 +86,19 @@ export default function ComingSoonModal({ project, onClose }: Props) {
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
-      // preventScroll: don't yank the page back if "Ask about it" just scrolled to #contact.
+      startScroll();
+      // preventScroll: don't yank the page back if "Ask about it" is scrolling to #contact.
       previouslyFocused?.focus({ preventScroll: true });
+      if (askRef.current) {
+        // Scrolling is only possible again now that the modal is gone.
+        const contact = document.getElementById("contact");
+        if (contact) {
+          const y = contact.getBoundingClientRect().top + window.scrollY - NAV_OFFSET;
+          requestAnimationFrame(() =>
+            scrollToTarget(y, { duration: 1.4, immediate: reducedMotion() })
+          );
+        }
+      }
     };
     // `close` only reads refs, so it's safe to bind once.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -96,6 +110,7 @@ export default function ComingSoonModal({ project, onClose }: Props) {
       onClick={(e) => {
         if (e.target === e.currentTarget) close();
       }}
+      data-lenis-prevent
       className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/75 px-4 backdrop-blur-md"
     >
       <div
@@ -161,7 +176,11 @@ export default function ComingSoonModal({ project, onClose }: Props) {
             </button>
             <a
               href="#contact"
-              onClick={close}
+              onClick={(e) => {
+                e.preventDefault();
+                askRef.current = true;
+                close();
+              }}
               className="flex-1 rounded-full border border-white/15 px-6 py-3 text-center font-bold text-white transition hover:border-[#f5a764]/60"
             >
               Ask about it

@@ -1,0 +1,161 @@
+/* Hero: logo orbit, journey start line, intro pre-hide. Colours follow the site palette:
+   accent #f5a764, hot #f5c895, cold tail #c9773a. */
+
+/* ---------- Intro pre-hide ----------
+   Elements tagged data-hero-reveal start hidden only when JavaScript is enabled and motion
+   is allowed, so the entrance animation doesn't flash the content first. Hero.tsx removes
+   data-intro as soon as it takes over. If it never does (script error), the failsafe
+   animation reveals everything after 3s. Without JavaScript nothing is hidden. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .hero[data-intro="pending"] [data-hero-reveal] {
+    opacity: 0;
+    animation: hero-failsafe 0.4s ease-out 3s forwards;
+  }
+}
+
+@keyframes hero-failsafe {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- Eyebrow pulse ---------- */
+.hero-pulse {
+  animation: hero-pulse 2.4s ease-out infinite;
+}
+
+@keyframes hero-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  70%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* ---------- Logo stage ---------- */
+.hero-logo {
+  --stage: 232px;
+  width: var(--stage);
+  aspect-ratio: 1;
+}
+
+@media (min-width: 640px) {
+  .hero-logo {
+    --stage: 272px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-logo {
+    /* Shrinks on short laptop screens so the first view stays composed. */
+    --stage: clamp(240px, min(24vw, 40svh), 330px);
+  }
+}
+
+.hero-tilt {
+  transform-style: preserve-3d;
+}
+
+.hero-logo__img {
+  width: 64%;
+  height: auto;
+  transform: translateZ(36px);
+  /* Rim glow that hugs the logo's own outline. */
+  filter: drop-shadow(0 0 1px rgba(245, 200, 149, 0.6)) drop-shadow(0 0 10px rgba(245, 167, 100, 0.32));
+}
+
+.hero-orbit {
+  animation: hero-spin 40s linear infinite;
+}
+
+.hero-orbit--reverse {
+  animation-duration: 64s;
+  animation-direction: reverse;
+}
+
+@keyframes hero-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Orange comet tail riding the outer orbit, trailing the dot at 12 o'clock. */
+.hero-orbit__tail {
+  background: conic-gradient(
+    from 0deg,
+    rgba(245, 167, 100, 0) 0deg,
+    rgba(245, 167, 100, 0) 280deg,
+    rgba(201, 119, 58, 0.55) 320deg,
+    rgba(245, 200, 149, 0.95) 360deg
+  );
+  -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1.5px));
+  mask: radial-gradient(closest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1.5px));
+}
+
+/* ---------- Journey start ---------- */
+.journey-line {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.2) 0 6px,
+    transparent 6px 14px
+  );
+}
+
+.journey-line__lit {
+  transform-origin: 50% 0;
+  transform: scaleY(0.45);
+  background: linear-gradient(to bottom, rgba(201, 119, 58, 0.35), #c9773a 25%, #f5a764 70%, #f5c895);
+  box-shadow: 0 0 10px rgba(245, 167, 100, 0.55);
+}
+
+.journey-line__track {
+  animation: journey-travel 2.6s cubic-bezier(0.55, 0, 0.45, 1) infinite;
+}
+
+@keyframes journey-travel {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.journey-node__halo {
+  animation: journey-halo 2.6s ease-out infinite;
+}
+
+@keyframes journey-halo {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-pulse,
+  .hero-orbit,
+  .journey-line__track,
+  .journey-node__halo {
+    animation: none;
+  }
+  .journey-line__track {
+    display: none;
+  }
+}

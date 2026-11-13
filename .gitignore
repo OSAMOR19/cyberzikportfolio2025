@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Original personal photos (contain GPS location in EXIF). The site uses stripped, edited copies in public/about/.
+/public/isaacpics/

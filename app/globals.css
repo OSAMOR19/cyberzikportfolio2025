@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
+/* Smooth scrolling is handled by Lenis (components/SmoothScroll.tsx); CSS smooth-scroll fights it.
+   scroll-padding keeps anchor/focus targets clear of the fixed navbar when Lenis isn't running. */
 html {
-  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
 }
 
 :root {

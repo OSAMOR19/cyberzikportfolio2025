@@ -1,0 +1,69 @@
+/* Stack "fuel rail": outlined words that fill with orange as they cross the viewport centre.
+   Default (no JS, reduced motion) is the fully lit state; components/Stack.tsx sets the
+   unlit start state inside its motion branch and scrubs towards this. */
+
+.stack-word {
+  font-size: clamp(44px, 8vw, 112px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+/* In-flow layer: the outline. This is the text screen readers get. */
+.stack-word__outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(245, 167, 100, 0.5);
+}
+
+/* Filled layer on top, revealed left to right. --stack-fill goes 0 -> 1 (default 1 = fully lit);
+   the extra padding keeps the glow from being cut off once a word is lit. */
+.stack-word__fill {
+  --stack-glow-pad: 64px;
+  clip-path: inset(
+    calc(var(--stack-glow-pad) * -1)
+      calc((1 - var(--stack-fill, 1)) * (100% + var(--stack-glow-pad)) - var(--stack-glow-pad))
+      calc(var(--stack-glow-pad) * -1)
+      calc(var(--stack-fill, 1) * var(--stack-glow-pad) * -1)
+  );
+  color: #f5a764;
+  text-shadow:
+    0 0 18px rgba(245, 167, 100, 0.4),
+    0 0 52px rgba(245, 167, 100, 0.18);
+}
+
+/* Hot leading edge that rides the fill boundary while a word is charging. */
+.stack-spark {
+  opacity: 0;
+  background: linear-gradient(to bottom, transparent, #fff4e6 18%, #fff4e6 82%, transparent);
+  box-shadow:
+    0 0 10px 2px rgba(245, 200, 149, 0.85),
+    0 0 34px 8px rgba(245, 167, 100, 0.4);
+}
+
+/* Rail between the word and its readout: dashed track (not travelled yet) under a lit line. */
+.stack-rail__track {
+  background: repeating-linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.2) 0 6px,
+    transparent 6px 14px
+  );
+}
+
+.stack-rail__lit {
+  transform-origin: left center;
+  background: linear-gradient(to right, rgba(245, 167, 100, 0.15), #f5a764 55%, #f5c895);
+  box-shadow:
+    0 0 8px rgba(245, 167, 100, 0.8),
+    0 0 22px rgba(245, 167, 100, 0.35);
+}
+
+.stack-node__core {
+  background: #f5a764;
+  box-shadow:
+    0 0 0 5px rgba(245, 167, 100, 0.18),
+    0 0 16px rgba(245, 167, 100, 0.75);
+}
+
+.stack-tick__lit {
+  background: #f5a764;
+  box-shadow: 0 0 6px rgba(245, 167, 100, 0.6);
+}

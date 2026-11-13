@@ -6,11 +6,12 @@ import Projects from "../components/Projects";
 import Stack from "../components/Stack";
 import Footer from "../components/Footer";
 import PixelSnow from "../components/PixelSnow";
-import ScrollStack, { ScrollStackItem } from "../components/ScrollStack";
-import Contact from "../components/Contact"
+import Contact from "../components/Contact";
+import SmoothScroll from "../components/SmoothScroll";
+
 export default function Home() {
   return (
-    <>
+    <SmoothScroll>
       <div className="fixed inset-0 -z-10 bg-black">
         <PixelSnow
           color="white"
@@ -28,20 +29,16 @@ export default function Home() {
         />
       </div>
 
-      {/* Foreground */}
+      {/* Foreground. Keep this wrapper free of overflow/transform/filter: the projects
+          pathway uses position: sticky, which any of those would break. */}
       <div className="relative z-10 min-h-screen">
         <Navbar />
-        {/* <ScrollStack>
-          <ScrollStackItem> */}
-            <Hero />
-            <Projects />
-            <Stack />
-            <Contact />
-            <Footer />
-          {/* </ScrollStackItem>
-        </ScrollStack> */}
-        
+        <Hero />
+        <Projects />
+        <Stack />
+        <Contact />
+        <Footer />
       </div>
-    </>
+    </SmoothScroll>
   );
 }
